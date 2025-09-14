@@ -3,10 +3,13 @@ import matplotlib.pyplot as plt
 from tensorflow.keras.models import load_model
 import pandas as pd
 
+from model.Response import Response
+
 model = load_model("galaxy_model.h5")
 
 IMG_SIZE = 64
 
+# La imagen ya se debe recibir en formato 64x64
 def preprocess_single_image(img_path):
     img = tf.io.read_file(img_path)
     img = tf.image.decode_jpeg(img, channels=3)
@@ -14,6 +17,7 @@ def preprocess_single_image(img_path):
     img = tf.cast(img, tf.float32) / 255.0
     img = tf.expand_dims(img, axis=0)  # batch de 1
     return img
+
 
 img_path = "SpiralGalaxy.jpg"
 img_tensor = preprocess_single_image(img_path)
@@ -27,6 +31,5 @@ plt.show()
 prediction = model.predict(img_tensor)
 prediction = prediction[0]
 
-
-df = pd.DataFrame([prediction], columns=[f"Q{i+1}" for i in range(37)])
-print(df.T)
+response = Response(prediction)
+print(response)
