@@ -1,4 +1,4 @@
-from PIL import Image
+from PIL import image
 
 ALLOWED_EXTENSIONS = {"png", "jpg", "jpeg"}
 ALLOWED_MIME_TYPES = {"image/jpeg", "image/png"}
@@ -27,10 +27,9 @@ def validate_image(file):
 
   #check procesar imagen
   try:
-    img = Image.open(file)
+    img = image.open(file)
     img.verify() 
   except Exception:
     return False, "El archivo no es una imagen válida."
 
-  file.seek(0)
   return True, "Imagen válida."

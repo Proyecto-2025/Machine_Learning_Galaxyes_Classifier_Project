@@ -1,5 +1,5 @@
-from ..models.image_model import ImageModel
-from ..db import db
+from app.models.image_model import ImageModel
+from app.db import db
 from datetime import datetime
 
 class DbService:

@@ -1,9 +1,8 @@
-from flask import Blueprint, jsonify, request, current_app
-from ..services.response_service import response_service
-from ..services.validation_service import validate_image
-
-#prefijo comun para las rutas de la API
-api_bp = Blueprint ("api", __name__)
+from flask import jsonify, request
+from . import api_bp
+from services.response_service import response_service
+from services.validation_service import validate_image
+from services.com_service import process
 
 @api_bp.route("/classify", methods=["POST"])
 def classify():
@@ -15,13 +14,19 @@ def classify():
     valid, message = validate_image(image)
     if not valid:
         return jsonify({"error": message}), 400
-    
-    image128 = image.resize((128,128))
+    else
+        image128 = image.resize((128,128))
 
-    com_service = current_app.config["COM_SERVICE"]
-    category = com_service.process(image128)
+    category = process(image128)
+
     text = response_service(category)
-    
+
+   """ #Simulated call to ML engine
+    result = {
+        "label": "galaxy A",
+        "confidence": 0.95
+    }
+    """
     return jsonify({category:text}), 200
 
 #----Server response Test---- 

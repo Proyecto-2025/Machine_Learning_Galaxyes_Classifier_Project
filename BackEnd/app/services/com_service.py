@@ -1,4 +1,4 @@
-
+from file_storage_service import FileStorageService
 
 class ComService:
     def __init__(self, ml_engine, db_service, storage_service):
