@@ -5,9 +5,9 @@ import "./style/Header.css"
 export default function Header() {
     const buttons = [
         {label: "Home", url: "/"},
-        {label: "About", url: "/about"},
         {label: "Predict", url: "/predict"},
         {label: "Learn", url: "/learn"},
+        {label: "About", url: "/about"},
     ]
 
     return (
