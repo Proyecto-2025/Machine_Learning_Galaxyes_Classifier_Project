@@ -14,7 +14,7 @@
 
 .uploader-grid {
   gap: 1rem;
-  margin-top: 1rem;
+  margin: 0;
   width: 100%;
   max-width: 800px;
 }
@@ -40,7 +40,7 @@
   color: #444;
 }
 .uploader-btn {
-  margin-top: 1rem;
+  margin: 0rem;
   padding: 10px 20px;
   border: none;
   background-color: #2d89ef;

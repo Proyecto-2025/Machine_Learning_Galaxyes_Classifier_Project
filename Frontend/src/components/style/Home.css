@@ -11,12 +11,12 @@
     display: flex;
 }
 
-.blur-background {
+.home .blur-background {
   flex: 1;
   margin: 0 10px;
   height: 200px;
 }
 
-.blur-background p {
+.home .blur-background p {
     text-align: center;
 }

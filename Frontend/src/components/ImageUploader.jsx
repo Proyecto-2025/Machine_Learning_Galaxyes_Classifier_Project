@@ -1,9 +1,11 @@
 import { useState } from "react";
-import "./style/ImageUploader.css";
 import ErrorMessage from "./ErrorMessage"
+import "./style/ImageUploader.css";
+
 export default function ImageUploader() {
   const [images, setImages] = useState([]);
   const [error, setError] = useState(null);
+
   // Guardar archivos seleccionados para preview y envío
   const handleFileSelect = (e) => {
     const files = Array.from(e.target.files);
