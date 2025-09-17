@@ -12,11 +12,27 @@
 }
 
 .home .blur-background {
-  flex: 1;
-  margin: 0 10px;
-  height: 200px;
+    text-decoration: none;
+    flex: 1;
+    margin: 0 10px;
+    height: 200px;
+    transition: background 0.3s, color 0.3s;
 }
 
 .home .blur-background p {
+    height: 0;
+    margin: 0;
+    visibility: hidden;
     text-align: center;
+    transition: opacity 0.2s ease, visibility 0s linear 0.17s
+}
+
+.home .blur-background:hover {
+    background: rgba(0,0,0, 0.9);
+    color: #56e2e4;
+}
+
+.home .blur-background:hover p {
+    height: auto;
+    visibility: visible;
 }

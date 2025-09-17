@@ -10,21 +10,14 @@
 
 .header-btn {
     color: white;
-    text-decoration: none;   /* remove underline */
+    text-decoration: none;
     padding: 0.5rem 1rem;
     border-radius: 8px;
     transition: background 0.3s, color 0.3s;
     font-weight: bold;
 }
 
-/* Hover effect */
 .header-btn:hover {
-    background: rgba(1,55,73, 0.1);
-    color: #ffd700; /* golden highlight */
-}
-
-/* Active route style (optional, if using NavLink) */
-.active {
-    background: rgba(1,55,73, 0.2);
-    color: #00ffff;
+    background: rgba(0,0,0, 0.9);
+    color: #56e2e4;
 }
