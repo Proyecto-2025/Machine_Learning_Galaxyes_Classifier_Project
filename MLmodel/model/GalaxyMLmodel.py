@@ -9,9 +9,11 @@ from tensorflow.keras import layers, models
 from sklearn.model_selection import train_test_split
 import seaborn as sns
 import random
+from epochCheckPoint import EpochCheckpoint
 
 # Rutas
 dataset_dir = Path("/home/david/Descargas/dataset/")
+#dataset_dir = Path("./dataset")
 path_training_solutions = dataset_dir / "training_solutions_rev1.csv"
 path_training_images = dataset_dir / "images_training_rev1"
 path_test_images = dataset_dir / "images_test_rev1"
@@ -112,11 +114,15 @@ model.summary()
 
 # -------------------------------
 # Entrenamiento
+
+checkpoint_cb = EpochCheckpoint(save_interval=50)
+
 history = model.fit(
     train_ds,
     validation_data=val_ds,
     batch_size=BATCH_SIZE,
-    epochs=20
+    epochs=20,
+    callbacks= [checkpoint_cb]
 )
 
 model.save("galaxy_model.h5")
