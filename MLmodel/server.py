@@ -1,25 +1,23 @@
-from pathlib import Path
-from flask import Flask
-from BackEnd.app.routes import api_bp
-from BackEnd.app.ml_engine import MLEngine
-from BackEnd.app.services.db_service import DbService
-from BackEnd.app.services.file_storage_service import FileStorageService
-from BackEnd.app.services.com_service import ComService
+from flask import Blueprint, request, jsonify
+from model.PredictGalaxy import makePrediction
+from model.Response import features_map
 
 
-# Inicializar Flask
-app = Flask(__name__)
-app.register_blueprint(api_bp, url_prefix="/api")
+controller_bp = Blueprint("controller", __name__)
 
-# Cargar modelo y servicios
-MODEL_PATH = Path(__file__).parent / "model" / "galaxy_model.h5"
-ml_engine = MLEngine(str(MODEL_PATH))
-db_service = DbService()
-storage_service = FileStorageService()
-com_service = ComService(ml_engine, db_service, storage_service)
+@controller_bp.route("/classify", methods=["POST"])
+def predict():
+    if "image" not in request.files:
+        return jsonify({"error": "No image provided"}), 400
 
-# Guardar la instancia en la app
-app.config["COM_SERVICE"] = com_service
+    image_file = request.files["image"]
+    
+    try:
+        prediction = makePrediction(image_file)
+        # Convertir a string
+        pred_strings = [f"{cls}: {prob:.3f}" for cls, prob in zip(features_map, prediction)]
+        pred_string = ", ".join(pred_strings)
+    except Exception as e:
+        return jsonify({"error": f"Prediction failed: {str(e)}"}), 500
 
-if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=5000, debug=True)
+    return jsonify({"prediction": pred_string}), 200
