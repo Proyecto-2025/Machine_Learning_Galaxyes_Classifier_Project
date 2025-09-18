@@ -115,7 +115,7 @@ model.summary()
 # -------------------------------
 # Entrenamiento
 
-checkpoint_cb = EpochCheckpoint(save_interval=50)
+checkpoint_cb = EpochCheckpoint(save_interval=50, file_name="name")
 
 history = model.fit(
     train_ds,
