@@ -47,6 +47,7 @@ class Response:
         self.__prediction = prediction
         self.__features = []
         self.map_features()
+        self.__HubbleSequence = []
 
     @property
     def prediction(self):
@@ -65,3 +66,7 @@ class Response:
         for key in features_map:
             if self.__prediction[key] > 0.5:
                 self.__features.append(features_map[key])
+
+    def classify(self):
+        if self.__prediction[0] >= 0.5:
+            print("Smooth")
