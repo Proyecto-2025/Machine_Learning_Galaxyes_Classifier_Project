@@ -1,3 +1,5 @@
+Investigar Roboflow, yolo.
+
 Vamos a probar en un principio la siguiente arquitectura basada en Krizhevsky (AlexNet style)
 cambiando el tamaño de las imagenes a 64x64.
 
@@ -18,3 +20,166 @@ Entrada: 64x64 RGB
    Dense -> ReLU o Maxout
        |
    Dense -> Softmax (output: #clases de galaxias)
+
+List of Questions
+Q1. Is the object a smooth galaxy, a galaxy with features/disk or a star? 3 responses
+
+Q2. Is it edge-on? 2 responses
+
+Q3. Is there a bar? 2 responses
+
+Q4. Is there a spiral pattern? 2 responses
+
+Q5. How prominent is the central bulge? 4 responses
+
+Q6. Is there anything "odd" about the galaxy? 2 responses
+
+Q7. How round is the smooth galaxy? 3 responses
+
+Q8. What is the odd feature? 7 responses
+
+Q9. What shape is the bulge in the edge-on galaxy? 3 responses
+
+Q10. How tightly wound are the spiral arms? 3 responses
+
+Q11. How many spiral arms are there? 6 responses
+
+Paths and the decision tree
+Each galaxy's classification is the result of a specific path down a decision tree. Multiple individuals (typically 40-50) all classified the same galaxy, resulting in multiple paths along the decision tree. These multiple paths generate probabilities for each node. Volunteers begin with general questions (eg, is it smooth?) and move on to more specific ones (eg, how many spiral arms are there?).
+
+As a result, at each node or question, the total initial probability of a classification will sum to 1.0. Those initial probabilities are then weighted as follows.
+
+Weighting the responses
+The values of the morphology categories in the solution file are computed as follows. For the first set of responses (smooth, features/disk, star/artifact), the values in each category are simply the likelihood of the galaxy falling in each category. These values sum to 1.0. For each subsequent question, the probabilities are first computed (these will sum to 1.0) and then multiplied by the value which led to that new set of responses. 
+
+Here is a simplified example: a galaxy had 80% of users identify it as smooth, 15% as having features/disk, and 5% as a star/artifact.
+
+Class1.1 = 0.80
+
+Class1.2 = 0.15
+
+Class1.3 = 0.05
+
+For the 80% of users that identified the galaxy as "smooth", they also recorded responses for the galaxy's relative roundness. These votes were for 50% completely round, 25% in-between, and 25% cigar-shaped. The values in the solution file are thus:
+
+Class 7.1 = 0.80 * 0.50 = 0.40
+
+Class 7.2 = 0.80 * 0.25 = 0.20
+
+Class 7.3 = 0.80 * 0.25 = 0.20
+
+This method of cumulatively multiplying probabilities applies for every morphology class, as mapped by the figure above. The sum of Class 1.1-1.3 each galaxy will always sum to 1.0, since this questions are answered for every galaxy. Class 6.1 and 6.2 have also been normalized to sum to 1.0, removing the effect of choosing 1.3 (star/artifact). For the remaining classes, the responses will always sum to <= 1.0.
+
+The reason for this weighting is to emphasize that a good solution must at a minimum get the high-level, large-scale morphology categories correct. The best solutions, though, will also have high levels of accuracy on the detailed solutions that are further down the decision tree.
+
+
+Mapeo de columnas → Preguntas
+Q1. Is the object a smooth galaxy, a galaxy with features/disk, or a star? (3 columnas)
+
+Class1.1 → Smooth
+
+Class1.2 → Features or disk
+
+Class1.3 → Star or artifact
+
+Q2. Is it edge-on? (2 columnas)
+
+(solo se responde si Q1.2 = disk)
+
+Class2.1 → Edge-on, yes
+
+Class2.2 → Edge-on, no
+
+Q3. Is there a bar? (2 columnas)
+
+(si no es edge-on)
+
+Class3.1 → Bar, yes
+
+Class3.2 → Bar, no
+
+Q4. Is there a spiral pattern? (2 columnas)
+
+Class4.1 → Spiral, yes
+
+Class4.2 → Spiral, no
+
+Q5. How prominent is the central bulge? (4 columnas)
+
+Class5.1 → No bulge
+
+Class5.2 → Just noticeable
+
+Class5.3 → Obvious
+
+Class5.4 → Dominant
+
+Q6. Is there anything odd? (2 columnas)
+
+Class6.1 → Odd, yes
+
+Class6.2 → Odd, no
+
+Q7. How round is the smooth galaxy? (3 columnas)
+
+(si Q1.1 = smooth)
+
+Class7.1 → Completely round
+
+Class7.2 → In-between
+
+Class7.3 → Cigar-shaped
+
+Q8. What is the odd feature? (7 columnas)
+
+(si Q6.1 = yes)
+
+Class8.1 → Ring
+
+Class8.2 → Lens or arc
+
+Class8.3 → Disturbed
+
+Class8.4 → Irregular
+
+Class8.5 → Other
+
+Class8.6 → Merger
+
+Class8.7 → Dust lane
+
+Q9. What shape is the bulge in the edge-on galaxy? (3 columnas)
+
+(si Q2.1 = yes)
+
+Class9.1 → Rounded
+
+Class9.2 → Boxy
+
+Class9.3 → No bulge
+
+Q10. How tightly wound are the spiral arms? (3 columnas)
+
+(si Q4.1 = yes)
+
+Class10.1 → Tight
+
+Class10.2 → Medium
+
+Class10.3 → Loose
+
+Q11. How many spiral arms are there? (6 columnas)
+
+(si Q4.1 = yes)
+
+Class11.1 → 1
+
+Class11.2 → 2
+
+Class11.3 → 3
+
+Class11.4 → 4
+
+Class11.5 → More than 4
+
+Class11.6 → Can’t tell

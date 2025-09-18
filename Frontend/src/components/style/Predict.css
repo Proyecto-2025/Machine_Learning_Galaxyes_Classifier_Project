@@ -1,0 +1,17 @@
+.predict .blur-background {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 2rem;
+}
+
+.predict h1 {
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+}
+
+.predict p {
+  margin-bottom: 2rem;
+  color: #555;
+}

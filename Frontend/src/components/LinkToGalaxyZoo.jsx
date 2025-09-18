@@ -1,4 +1,4 @@
-import "./LinkToGalaxyZoo.css";
+import "./style/LinkToGalaxyZoo.css";
 
 export default function ExternalLinkButton() {
   const handleClick = () => {

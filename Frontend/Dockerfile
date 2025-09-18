@@ -7,5 +7,4 @@ COPY . .
 
 EXPOSE 5173
 
-# 7️⃣ Start Vite dev server
 CMD ["npm", "run", "dev"]
