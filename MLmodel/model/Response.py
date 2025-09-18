@@ -48,6 +48,7 @@ class Response:
         self.__features = []
         self.map_features()
         self.__HubbleSequence = []
+        self.__limit = 0.5
 
     @property
     def prediction(self):
@@ -68,5 +69,51 @@ class Response:
                 self.__features.append(features_map[key])
 
     def classify(self):
-        if self.__prediction[0] >= 0.5:
-            print("Smooth")
+        """Clasificación Hubble basada en el árbol de decisión"""
+        self.__HubbleSequence = []  # limpiar previo
+
+        # 01 ¿Suave y redonda, sin disco?
+        if "SUAVE" in self.__features or "COMPLETAMENTE REDONDA" in self.__features:
+            self.__HubbleSequence.append("E")  # Elíptica
+            return self.__HubbleSequence
+
+        # 02 ¿Disco visto de perfil?
+        if "VISTA DE PERFIL" in self.__features:
+            self.__HubbleSequence.append("S0")  # Lenticular
+            return self.__HubbleSequence
+
+        # 03 ¿Barra central?
+        bar = "CON BARRA ATRAVESANDO EL CENTRO DE LA GALAXIA" in self.__features
+        # 04 ¿Patrón de brazos espirales?
+        spiral = "CON PATRON DE BRAZOS ESPIRALES" in self.__features
+
+        # 05 Bulbo central
+        bulge_map = {
+            "SIN BULTO CENTRAL": "a",
+            "BULTO CENTRAL APENAS PERCEPTIBLE": "a",
+            "BULTO CENTRAL OBVIO": "b",
+            "BULTO CENTRAL DOMINANTE": "c"
+        }
+        bulge = None
+        for b in bulge_map:
+            if b in self.__features:
+                bulge = bulge_map[b]
+                break
+
+        # 06 Odd?
+        odd = "HAY ALGO EXTRAÑO (ODD)" in self.__features
+
+        # Clasificación final
+        if spiral:
+            if bar:
+                hubble = "SB" + (bulge if bulge else "")
+            else:
+                hubble = "S" + (bulge if bulge else "")
+            if odd:
+                hubble += " (ODD)"
+            self.__HubbleSequence.append(hubble)
+        else:
+            # Si no es espiral ni elíptica suave
+            self.__HubbleSequence.append("Irregular" if odd else "S0")
+
+        return self.__HubbleSequence
