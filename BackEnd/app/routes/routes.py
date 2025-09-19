@@ -14,12 +14,8 @@ def classify():
     valid, message = validate_image(image)
     if not valid:
         return jsonify({"error": message}), 400
-    else
-        image128 = image.resize((128,128))
 
-    category = process(image128)
-
-    text = response_service(category)
+    features = process(image)
 
    """ #Simulated call to ML engine
     result = {

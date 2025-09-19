@@ -10,15 +10,41 @@ class ComService:
         self.storage_service = storage_service
         
     def process(self, image):
-        
-        #Calls Ml engine and gets a prediction(category)
-        category = self.ml_engine.predict(image) 
-        
-        #Saves the file and gets its path
-        image_path = self.storage_service.save(image)
-        
-        #Saves image (filepath) and prediction in DB
-        self.db_service.save_prediction(image_path, category)
-        
-        #¿Returns prediction for route purpose?
-        return category
+
+        filename = getattr(image_file, "filename", "upload.bin")
+        mimetype = getattr(image_file, "mimetype", "application/octet-stream")
+
+        # Leer bytes
+        raw = image_file.read()
+        if not raw:
+            raise ValueError("archivo vacío")
+
+        # POST al microservicio IA 
+        files = {"image": (filename, raw, mimetype)}
+        try:
+            resp = requests.post(f"{self.ml_base_url}/predict", files=files, timeout=self.timeout)
+            resp.raise_for_status()
+        except requests.RequestException as e:
+            raise RuntimeError(f"ml service error: {e}")
+
+        #guardar respuesta prediccion
+        ml_json = resp.json()              
+        features = ml_json.get("features", [])
+
+        #Rewind para guardar con tu storage actual 
+        try:
+            image_file.stream.seek(0)
+            image_path = self.storage_service.save(image_file)
+        except Exception:
+
+            raise
+
+        # Guardar predicción completa en DB 
+
+        # Buscar una imagen cualquiera que cumpla esos features
+
+        # Devolver tal cual al caller
+        return {
+            "prediction": ml_json,
+            "saved_image_path": image_path,
+        }
