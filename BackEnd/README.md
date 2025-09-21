@@ -37,14 +37,12 @@ curl -X POST http://localhost:5000/api/v1/classify \
 - features: lista de caracteristicas extraídas por el ML Engine
 
 ## Posibles errores
-
-Código      Mensaje                           Descripción
-400         "no image provided"               No se envió ningun archivo
-400         "Formato no permitido"            Extensión no valida
-400         "Tipo de archivo no valido"       MIME type incorrecto
-400         "El archivo supera los 5mb"       Archivo demasiado grande
-400         "No es una imagen valida"         Archivo corrupto
-500         "Unexpected error"                Error interno del backend
+- Código: 400, Mensaje: "no image provided" -> No se envió ningún archivo.
+- Código: 400, Mensaje: "Formato no permitido" -> Extensión no valida.
+- Código: 400, Mensaje: "Tipo de archivo no valido" -> MIME type incorrecto.
+- Código: 400, Mensaje: "El archivo supera los 5mb" -> Archivo demasiado grande.
+- Código: 400, Mensaje: "No es una imagen valida" -> Archivo corrupto o no procesable.
+- Código: 500, Mensaje: "unexpected error" -> Error interno del backend
 
 ## Notas
 Las imagenes se guardan en uploads/<dd-mm-yyyy>/ con nombres únicos generados por UUID.
