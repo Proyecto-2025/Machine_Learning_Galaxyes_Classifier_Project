@@ -1,8 +1,10 @@
 from flask import jsonify, request
 from . import api_bp
-from services.response_service import response_service
-from services.validation_service import validate_image
-from services.com_service import process
+from ..services.validation_service import validate_image
+from ..services.com_service import ComService
+from ..services.db_service import DbService
+from ..services.file_storage_service import FileStorageService
+
 
 @api_bp.route("/classify", methods=["POST"])
 def classify():
@@ -14,22 +16,17 @@ def classify():
     valid, message = validate_image(image)
     if not valid:
         return jsonify({"error": message}), 400
-    else
-        image128 = image.resize((128,128))
 
-    category = process(image128)
+    db_service = DbService()
+    file_storage_service = FileStorageService()
+    com_service = ComService(db_service=db_service, storage_service= file_storage_service)
+    
+    result = com_service.process(image)
+    
+     
+    return jsonify({
+        "filename": result["similar_image_filename"],
+        "features": result["features"]
+        }), 200
 
-    text = response_service(category)
 
-   """ #Simulated call to ML engine
-    result = {
-        "label": "galaxy A",
-        "confidence": 0.95
-    }
-    """
-    return jsonify({category:text}), 200
-
-#----Server response Test---- 
-@api_bp.route("/health", methods=["GET"])
-def health():
-    return jsonify({"status": "ok"}), 200
