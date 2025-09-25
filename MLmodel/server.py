@@ -1,6 +1,6 @@
 from flask import Blueprint, request, jsonify
 from model.PredictGalaxy import makePrediction
-from model.Response import features_map
+from model.Response import Response
 
 
 controller_bp = Blueprint("controller", __name__)
@@ -13,11 +13,13 @@ def predict():
     image_file = request.files["image"]
     
     try:
-        prediction = makePrediction(image_file)
-        # Convertir a string
-        pred_strings = [f"{cls}: {prob:.3f}" for cls, prob in zip(features_map, prediction)]
-        pred_string = ", ".join(pred_strings)
+        raw_prediction = makePrediction(image_file)   # Array de probabilidades
+        response_obj = Response(raw_prediction)       # Lo paso por Response
+        features = response_obj.features   # Saco las features mas importantes
     except Exception as e:
         return jsonify({"error": f"Prediction failed: {str(e)}"}), 500
 
-    return jsonify({"prediction": pred_string}), 200
+    return jsonify({
+        "prediction": features,  # lista de labels activados
+    }), 200
+

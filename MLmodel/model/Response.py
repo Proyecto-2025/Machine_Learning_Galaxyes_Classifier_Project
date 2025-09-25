@@ -53,6 +53,10 @@ class Response:
     def prediction(self):
         return self.__prediction
 
+    @property
+    def features(self):  # <-- getter público
+        return self.__features
+    
     @prediction.setter
     def prediction(self, value):
         self.__prediction = value
