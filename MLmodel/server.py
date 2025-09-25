@@ -13,13 +13,17 @@ def predict():
     image_file = request.files["image"]
     
     try:
-        raw_prediction = makePrediction(image_file)   # Array de probabilidades
-        response_obj = Response(raw_prediction)       # Lo paso por Response
-        features = response_obj.features   # Saco las features mas importantes
+        raw_prediction = makePrediction(image_file)    # Array de probabilidades
+        response_obj = Response(raw_prediction)        # Lo paso por Response
+        prediction = [round(float(p), 3) for p in response_obj.prediction] # Predicciones redondeadas
+        features = response_obj.features               # Las features mas importantes
+        hubble_sequence = response_obj.hubble_sequence
     except Exception as e:
         return jsonify({"error": f"Prediction failed: {str(e)}"}), 500
 
     return jsonify({
-        "prediction": features,  # lista de labels activados
+        "prediction": prediction,
+        "features": features,
+        "hubblesequence": hubble_sequence
     }), 200
 
