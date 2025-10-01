@@ -3,27 +3,25 @@ import ErrorMessage from "./ErrorMessage"
 import "./style/ImageUploader.css";
 
 export default function ImageUploader() {
-  const [images, setImages] = useState([]);
+  const [image, setImage] = useState(null);
   const [error, setError] = useState(null);
 
-  // Guardar archivos seleccionados para preview y envío
-  const handleFileSelect = (e) => {
-    const files = Array.from(e.target.files);
-    const previews = files.map((file) => ({
-      file, // mantenemos el archivo para enviar
-      name: file.name,
+ const handleFileSelect = (e) => {
+  const file = e.target.files[0];
+  if (file) {
+    setImage({
+      file, // ✅ importante para el upload
       url: URL.createObjectURL(file),
-    }));
-
-    setImages((prev) => [...prev, ...previews]);
-  };
+      name: file.name,
+    });
+  }
+};
 
   // Enviar imágenes al backend
   const handleUpload = async () => {
-    if (images.length === 0) return;
 
     const formData = new FormData();
-    images.forEach((img) => formData.append("images", img.file));
+    formData.append("image",image.file);
 
     try {
       const response = await fetch("http://127.0.0.1:5000/upload", {
@@ -41,12 +39,12 @@ export default function ImageUploader() {
         setError(data.error);
       } else {
         alert("Imágenes enviadas correctamente!");
-        setImages([])
+        setImage(null)
       }
       } catch (err) {
         console.error("Error en la subida:", err);
         setError(err.message); // 🔹 guarda el mensaje de error
-        setImages([])
+        setImage(null)
       }
   };
 
@@ -58,18 +56,17 @@ export default function ImageUploader() {
         <input
           type="file"
           accept="image/*"
-          multiple
           onChange={handleFileSelect}
           className="uploader-input"
         />
 
         <div className="uploader-grid">
-          {images.map((img, idx) => (
-            <div key={idx} className="uploader-item">
-              <img src={img.url} alt={img.name} className="uploader-img" />
-              <span className="uploader-name">{img.name}</span>
+          {image && (
+            <div className="uploader-item">
+              <img src={image.url} alt={image.name} className="uploader-img" />
+              <span className="uploader-name">{image.name}</span>
             </div>
-          ))}
+          )}
         </div>
         
       <button onClick={handleUpload} className="uploader-btn">
