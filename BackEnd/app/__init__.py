@@ -2,7 +2,7 @@ from flask import Flask
 from flask_cors import CORS
 from .routes.routes import api_bp
 from .db import db, migrate
-#from app.models import image_model
+
 
 def create_app():
     app = Flask(__name__)

@@ -7,13 +7,15 @@ from sqlalchemy import extract
 class DbService:
     
    @staticmethod
-   def save_prediction(filename: str, features: list[str]):
+   def save_prediction(filename: str, prediction: list[float], features: list[str], hubble_sequence: list[str]):
        
        img = ImageModel(
            filename = filename,
+           prediction = prediction,
+           features = features,
+           hubble_sequence = hubble_sequence,
            creation_date = datetime.utcnow()
-       ) 
-       img.set_features(features)
+        ) 
        db.session.add(img)
        db.session.commit()
        return img

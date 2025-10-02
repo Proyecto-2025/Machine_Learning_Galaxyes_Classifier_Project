@@ -1,4 +1,3 @@
-from app.models.image_model import ImageModel
 import json
 
 def test_store_and_search_image(db_service, app):
