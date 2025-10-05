@@ -1,8 +1,8 @@
+from __future__ import annotations
 from ..models.image_model import ImageModel
 from ..db import db
 from datetime import datetime
 from sqlalchemy import extract
-
 
 class DbService:
     
