@@ -98,11 +98,25 @@ Cada pregunta tiene múltiples opciones de respuesta posibles, sumando un total 
 
 ```mermaid
 graph TD
+   graph TD
     A[Imagen de Galaxia] --> B[CNN AlexNet]
     B --> C[37 Probabilidades Morfológicas]
     C --> D{Algoritmo de<br/>Post-procesamiento}
     D --> E[Pregunta 1:<br/>¿Suave/Características/Perturbada?]
     D --> F[Pregunta 2-11:<br/>Características específicas]
+    E --> G[Análisis de<br/>Características Dominantes]
+    F --> G
+    G --> H[Clasificación Final<br/>Secuencia de Hubble]
+    
+    style A fill:#3498DB,stroke:#2471A3,stroke-width:2px,color:#fff
+    style B fill:#9B59B6,stroke:#7D3C98,stroke-width:2px,color:#fff
+    style C fill:#F39C12,stroke:#C87F0A,stroke-width:2px,color:#fff
+    style D fill:#E74C3C,stroke:#C0392B,stroke-width:2px,color:#fff
+    style E fill:#1ABC9C,stroke:#16A085,stroke-width:2px,color:#fff
+    style F fill:#1ABC9C,stroke:#16A085,stroke-width:2px,color:#fff
+    style G fill:#34495E,stroke:#2C3E50,stroke-width:2px,color:#fff
+    style H fill:#27AE60,stroke:#229954,stroke-width:2px,color:#fff
+``` F[Pregunta 2-11:<br/>Características específicas]
     E --> G[Análisis de<br/>Características Dominantes]
     F --> G
     G --> H[Clasificación Final<br/>Secuencia de Hubble]
