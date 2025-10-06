@@ -6,57 +6,61 @@ from ..services.com_service import ComService
 from ..services.db_service import DbService
 from ..services.file_storage_service import FileStorageService
 from ..models.article_model import Article
-import random
-from datetime import datetime
 from ..models.image_model import ImageModel
+from datetime import datetime
+import random
 
 db_service = DbService()
 file_storage_service = FileStorageService()
-com_service = ComService(db_service=db_service, storage_service= file_storage_service)
+com_service = ComService(db_service=db_service, storage_service=file_storage_service)
 
 @api_bp.route("/classify", methods=["POST"])
 def classify():
     if "image" not in request.files:
         return jsonify({"error": "no image provided"}), 400
     image = request.files["image"]
-    
-    #Add MIME type check, extension check and/or image verification by processing
+
     valid, message = validate_image(image)
     if not valid:
         return jsonify({"error": message}), 400
-    
-    #Process the image a returns a list of features
-    try:    
+
+    try:
         result = com_service.process(image)
         return jsonify(result), 200
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
-@api_bp.route ("/play", methods = ["POST"])
+
+@api_bp.route("/play", methods=["POST"])
 def play():
     try:
-        #Creates a list with all the ids from the database
-        ids = [i[0] for i in db.session.query(ImageModel.id).all()]
-    
-        #sets a seed based on the actual time
+        # IDs existentes en la DB
+        ids = [row[0] for row in db.session.query(ImageModel.id).all()]
+        if not ids:
+            return jsonify({"error": "No hay imágenes en la base de datos"}), 404
+
+        # Semilla por timestamp actual
         seed = int(datetime.utcnow().timestamp())
-    
-        #use the seed to generate a random number
         random.seed(seed)
-    
-        #search for a random register in the database
+
+        # ID aleatorio y registro
         random_id = random.choice(ids)
-    
         random_image = db_service.search_image_by_id(random_id)
-    
-        random_image_filename = random_image.filename
-    
-        random_image_features = random_image.features
-    
-        return jsonify ({
-            "filename": random_image_filename,
-            "features": random_image_features
+        if not random_image:
+            return jsonify({"error": f"Imagen id={random_id} no encontrada"}), 404
+
+        return jsonify({
+            "filename": random_image.filename,
+            "features": random_image.features
         }), 200
+
+    except Exception as e:
+        # No hay escritura aquí, pero por las dudas si en el futuro se agrega
+        try:
+            db.session.rollback()
+        except Exception:
+            pass
+        return jsonify({"error": str(e)}), 500
 
 
 # -------------------- HELPERS ARTÍCULOS --------------------
@@ -69,6 +73,7 @@ def article_to_dict(article: Article):
         "cuerpoArticulo": article.cuerpo_articulo,
         "creation_date": article.creation_date.isoformat() if getattr(article, "creation_date", None) else None,
     }
+
 
 # -------------------- ARTÍCULOS: CREATE (uno o varios) --------------------
 @api_bp.route("/articles", methods=["POST"])
@@ -91,13 +96,13 @@ def create_articles():
 
             resumen = item.get("resumen")
             foto = item.get("foto")
-            cuerpo = item.get("cuerpoArticulo") 
+            cuerpo = item.get("cuerpoArticulo")
 
             article = Article(
                 titulo=titulo.strip(),
                 resumen=resumen.strip() if isinstance(resumen, str) else resumen,
                 foto=foto.strip() if isinstance(foto, str) else foto,
-                cuerpo_articulo=cuerpo if isinstance(cuerpo, str) else cuerpo, 
+                cuerpo_articulo=cuerpo if isinstance(cuerpo, str) else cuerpo,
             )
             db.session.add(article)
             created.append(article)
@@ -106,7 +111,7 @@ def create_articles():
         return jsonify([article_to_dict(a) for a in created]), 201
 
     except Exception as e:
-        db.session.rollback()        
+        db.session.rollback()
         return jsonify({"error": "No se pudieron crear los artículos", "detail": str(e)}), 500
 
 
@@ -115,6 +120,7 @@ def list_articles():
     articles = Article.query.order_by(Article.id.asc()).all()
     data = [{"id": a.id, "titulo": a.titulo, "resumen": a.resumen} for a in articles]
     return jsonify(data), 200
+
 
 @api_bp.route("/articles/<int:article_id>", methods=["GET"])
 def get_article(article_id):
