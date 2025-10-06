@@ -115,15 +115,7 @@ graph TD
     style F fill:#1ABC9C,stroke:#16A085,stroke-width:2px,color:#fff
     style G fill:#34495E,stroke:#2C3E50,stroke-width:2px,color:#fff
     style H fill:#27AE60,stroke:#229954,stroke-width:2px,color:#fff
-``` F[Pregunta 2-11:<br/>Características específicas]
-    E --> G[Análisis de<br/>Características Dominantes]
-    F --> G
-    G --> H[Clasificación Final<br/>Secuencia de Hubble]
-    
-    style A fill:#e8f4f8
-    style B fill:#f0e1ff
-    style C fill:#fff4e1
-    style H fill:#e1ffe8
+
 ```
 
 ## 🛠️ Tecnologías Utilizadas
