@@ -6,7 +6,7 @@
   text-align: center;
 }
 
-.results h2 {
+.results h2 , .results h3{
   margin-bottom: 1rem;
   color: #333;
 }
@@ -14,6 +14,7 @@
 .results ul {
   list-style: none;
   padding: 0;
+  color: red;
 }
 
 .results li {

@@ -40,7 +40,6 @@ export default function ImageUploader() {
       // 🔹 si el backend devuelve { error: ... }
         setError(data.error);
       } else {
-        alert("Imágenes enviadas correctamente!");
         setImage(null);
         setResults(data);
       }
@@ -55,7 +54,16 @@ export default function ImageUploader() {
     }
 
     if (results) {
-      return <PredictResults data={results} onBack={() => setResults(null)} />;
+      return <PredictResults 
+        data={results} 
+        onBack={() => setResults(null)}
+        onRetry={
+          () => {setResults(null);
+          window.location.href = "/predict";
+          } 
+        }
+        />;
+
     }
 
   return (

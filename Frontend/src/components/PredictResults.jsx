@@ -1,6 +1,6 @@
 import "./style/PredictResults.css";
 
-export default function PredictResults({ data, onBack }) {
+export default function PredictResults({ data, onBack, onRetry }) {
   return (
     <div className="results">
       <h2>Resultados de Predicción</h2>
@@ -21,6 +21,8 @@ export default function PredictResults({ data, onBack }) {
       <button className="results-btn" onClick={onBack}>
         Subir otra imagen
       </button>
+      <button onClick={onRetry}>Ir a /predict</button>
+
     </div>
   );
 }
