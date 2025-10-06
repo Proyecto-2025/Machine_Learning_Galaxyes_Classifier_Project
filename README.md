@@ -18,13 +18,15 @@ Sistema de clasificación de galaxias basado en Deep Learning que utiliza una Re
 graph LR
     A[Frontend<br/>React] -->|Imagen de galaxia| B[Backend<br/>Flask API]
     B -->|Request de predicción| C[Microservicio ML<br/>CNN + Keras]
-    C -->|37 probabilidades<br/>morfológicas| B
-    B -->|Clasificación Hubble<br/>procesada| A
+    C -->|Response Object<br/>37 probabilidades + features| B
+    B -->|Response procesado<br/>Clasificación Hubble| A
     
-    style A fill:#e1f5ff
-    style B fill:#fff4e1
-    style C fill:#f0e1ff
+    style A fill:#4A90E2,stroke:#2E5C8A,stroke-width:2px,color:#fff
+    style B fill:#F39C12,stroke:#C87F0A,stroke-width:2px,color:#fff
+    style C fill:#9B59B6,stroke:#7D3C98,stroke-width:2px,color:#fff
 ```
+
+
 
 ### Flujo de Datos
 
