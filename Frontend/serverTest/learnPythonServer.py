@@ -10,10 +10,10 @@ os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 @app.route("/upload", methods=["POST"])
 def upload_file():
     # 1. Revisar si se envió el archivo
-    if "images" not in request.files:
+    if "image" not in request.files:
         return jsonify({"error": "No se envió ninguna imagen"}), 400
 
-    file = request.files["images"]
+    file = request.files["image"]
 
     # 2. Validar nombre de archivo
     if file.filename == "":
@@ -30,7 +30,15 @@ def upload_file():
     return jsonify({
         "message": "Imagen recibida correctamente",
         "file": file.filename,
-        "path": file_path  # para debug
+        "path": file_path,  # para debug
+        "classification": "tipo_galaxia",
+        "c0": "0.0",
+        "c1": "0.1",
+        "c2": "0.2",
+        "c3": "0.3",
+        "c3": "0.4",
+        "c4": "0.5",
+        "c5": "0.6"
     }), 200
 
 @app.route("/articles")

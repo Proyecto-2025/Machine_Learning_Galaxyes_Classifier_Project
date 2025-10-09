@@ -1,29 +1,29 @@
 import { useState } from "react";
 import ErrorMessage from "./ErrorMessage"
+import PredictResults from "./PredictResults";
 import "./style/ImageUploader.css";
 
 export default function ImageUploader() {
-  const [images, setImages] = useState([]);
+  const [image, setImage] = useState(null);
   const [error, setError] = useState(null);
+  const [results, setResults] = useState(null);
 
-  // Guardar archivos seleccionados para preview y envío
-  const handleFileSelect = (e) => {
-    const files = Array.from(e.target.files);
-    const previews = files.map((file) => ({
-      file, // mantenemos el archivo para enviar
-      name: file.name,
-      url: URL.createObjectURL(file),
-    }));
-
-    setImages((prev) => [...prev, ...previews]);
+   const handleFileSelect = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setImage({
+        file, // ✅ importante para el upload
+        url: URL.createObjectURL(file),
+        name: file.name,
+      });
+    }
   };
 
   // Enviar imágenes al backend
   const handleUpload = async () => {
-    if (images.length === 0) return;
 
     const formData = new FormData();
-    images.forEach((img) => formData.append("images", img.file));
+    formData.append("image",image.file);
 
     try {
       const response = await fetch("http://127.0.0.1:5000/upload", {
@@ -40,42 +40,53 @@ export default function ImageUploader() {
       // 🔹 si el backend devuelve { error: ... }
         setError(data.error);
       } else {
-        alert("Imágenes enviadas correctamente!");
-        setImages([])
+        setImage(null);
+        setResults(data);
       }
       } catch (err) {
         console.error("Error en la subida:", err);
         setError(err.message); // 🔹 guarda el mensaje de error
-        setImages([])
+        setImage(null)
       }
-  };
+    };
+    if (error) {
+      return <ErrorMessage message={error} onRetry={() => setError(null)} />;
+    }
+
+    if (results) {
+      return <PredictResults 
+        data={results} 
+        onBack={() => setResults(null)}
+        onRetry={
+          () => {setResults(null);
+          window.location.href = "/predict";
+          } 
+        }
+        />;
+
+    }
 
   return (
-    error ? (
-      <ErrorMessage message={error}  onRetry={() => setError(null)}/>
-    ):(
-      <div className="uploader">
-        <input
-          type="file"
-          accept="image/*"
-          multiple
-          onChange={handleFileSelect}
-          className="uploader-input"
-        />
+    <div className="uploader">
+      <input
+        type="file"
+        accept="image/*"
+        onChange={handleFileSelect}
+        className="uploader-input"
+      />
 
-        <div className="uploader-grid">
-          {images.map((img, idx) => (
-            <div key={idx} className="uploader-item">
-              <img src={img.url} alt={img.name} className="uploader-img" />
-              <span className="uploader-name">{img.name}</span>
-            </div>
-          ))}
-        </div>
-        
-      <button onClick={handleUpload} className="uploader-btn">
+      <div className="uploader-grid">
+        {image && (
+          <div className="uploader-item">
+            <img src={image.url} alt={image.name} className="uploader-img" />
+            <span className="uploader-name">{image.name}</span>
+          </div>
+        )}
+      </div>
+
+      <button onClick={handleUpload} className="uploader-btn" disabled={!image}>
         Enviar al backend
       </button>
-    </div>        
-    )
+    </div>
   );
 }
