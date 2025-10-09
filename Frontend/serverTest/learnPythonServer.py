@@ -1,4 +1,4 @@
-from flask import Flask,request , jsonify
+from flask import Flask,request , jsonify, send_from_directory
 from flask_cors import CORS
 import os
 app = Flask(__name__)
@@ -8,7 +8,6 @@ UPLOAD_FOLDER = "uploads"
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 
 @app.route("/upload", methods=["POST"])
-
 def upload_file():
     # 1. Revisar si se envió el archivo
     if "image" not in request.files:
@@ -50,6 +49,10 @@ def get_articles():
         {"name": "Exoplanets", "resume": "Planets that orbit stars outside our solar system."}
     ]
     return jsonify(articles)
+
+@app.route("/randomImage")
+def post_ramdom_image():
+    return send_from_directory("./","Messier_59.jpg")
 
 if __name__ == "__main__":
     app.run(debug=True, port=5000)
