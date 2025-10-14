@@ -3,8 +3,8 @@ import "./style/ImageUploader.css"
 
 export default function ImageUploader(){
   const [image,setImage] = useState(null);
-
-  const handleFileChange = (e) => {
+  const [uploading,setUploading] = useState(null);
+  const handleFileSelect = (e) => {
     if(e.target.file){
       setImage({
         file,
