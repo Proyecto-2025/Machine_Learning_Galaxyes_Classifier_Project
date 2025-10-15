@@ -13,7 +13,7 @@ export default function AppRoutes() {
             <div className='routes-container'>
                 <Routes>    
                     <Route path="/" element={<Home />} />
-                    <Route path="/predict" element={<Predict />} />
+                    <Route path="/predict/*" element={<Predict />} />
                     <Route path="/about" element={<About />} />
                     <Route path="/learn" element={<Learn />} />
                     <Route path="/play" element={<Play />} />

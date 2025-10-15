@@ -1,6 +1,16 @@
+import { useNavigate, useLocation } from "react-router-dom";
 import "./style/PredictResults.css";
 
-export default function PredictResults({ data, onBack, onRetry }) {
+export default function PredictResults({onBack}) {
+  const navigate = useNavigate();
+  const {state} = useLocation();
+  const data = state?.data;
+  const handleBack = () => {
+    navigate("/predict");
+  };
+   if (!data) {
+    return <p>No se encontraron resultados.</p>;
+  }
   return (
     <div className="results">
       <h2 className="headers">Resultados de Predicción</h2>
@@ -42,7 +52,7 @@ export default function PredictResults({ data, onBack, onRetry }) {
         <button className="results-btn" onClick={onBack}>
           Subir otra imagen
         </button>
-        <button onClick={onRetry}>
+        <button onClick= {handleBack}>
           Ir a /predict
         </button>
       </div>

@@ -1,11 +1,13 @@
 import { useState } from "react";
 import "./style/ImageUploader.css"
 
-export default function ImageUploader(){
+export default function ImageUploader({onError,onSuccess}){
   const [image,setImage] = useState(null);
   const [uploading,setUploading] = useState(null);
+
   const handleFileSelect = (e) => {
-    if(e.target.file){
+    if(e.target.files){
+      const file = e.target.files[0];
       setImage({
         file,
         url: URL.createObjectURL(file),
@@ -30,14 +32,10 @@ export default function ImageUploader(){
       if (!response.ok) throw new Error("Error al subir la imagen");
 
       const data = await response.json();
-
-      if (data.error) {
-        onError(data.error);
-      } else {
-        onSuccess(data);
-      }
+      console.log(data)
+        onSuccess?.(data);
     } catch (err) {
-      onError(err.message);
+      onError?.(err.message); 
     } finally {
       setUploading(false);
     }
