@@ -1,11 +1,11 @@
 from flask import Blueprint, request, jsonify
-from model.PredictGalaxy import makePrediction
-from model.Response import Response
+from MLmodel.model.PredictGalaxy import makePrediction
+from MLmodel.model.Response import Response
 
 
 controller_bp = Blueprint("controller", __name__)
 
-@controller_bp.route("/classify", methods=["POST"])
+@controller_bp.route("/ml/predict_galaxy", methods=["POST"])
 def predict():
     if "image" not in request.files:
         return jsonify({"error": "No image provided"}), 400

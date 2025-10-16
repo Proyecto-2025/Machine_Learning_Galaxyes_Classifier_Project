@@ -58,6 +58,10 @@ class Response:
     def features(self):  # <-- getter público
         return self.__features
     
+    @property
+    def hubble_sequence(self):
+        return self.__prediction
+    
     @prediction.setter
     def prediction(self, value):
         self.__prediction = value
