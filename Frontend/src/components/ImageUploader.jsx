@@ -33,16 +33,17 @@ export default function ImageUploader({onError,onSuccess}){
 
       const data = await response.json();
       console.log(data)
-        onSuccess?.(data);
-    } catch (err) {
+      onSuccess?.(data);
+    }catch(err) {
       onError?.(err.message); 
-    } finally {
+    }finally {
       setUploading(false);
     }
   };
 
   return (
     <div className="uploader">
+      <h1>Share you galaxy image with us!</h1>
       <input
         type="file"
         accept="image/*"

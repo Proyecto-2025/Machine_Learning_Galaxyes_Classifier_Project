@@ -16,33 +16,14 @@ export default function PredictResults({onBack}) {
       <h2 className="headers">Resultados de Predicción</h2>
       <div className="section">
         <h2 className="headers">Archivo recidido</h2>
-        <p><strong>Archivo:</strong> {data.file}</p>
+        <p><strong>Archivo:</strong> {data.filename}</p>
       </div>
       <div className="section">
-        <h2 className="headers">Probabilidades</h2>
-        <table className="data-table">
-          <thead>
-            <tr>
-              <th>C0</th>
-              <th>C1</th>
-              <th>C2</th>
-              <th>C3</th>
-              <th>C4</th>
-              <th>C5</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>{data.c0}</td>
-              <td>{data.c1}</td>
-              <td>{data.c2}</td>
-              <td>{data.c3}</td>
-              <td>{data.c4}</td>
-              <td>{data.c5}</td>
-            </tr>
-          </tbody>
-        </table>
-        </div>
+        <h2 className="headers">Features</h2>
+        {data.features.map((feature,index)=>(
+          <p key={index}>{feature}</p>
+        ))}
+      </div>
       <div className="section">
         <h2 className="headers">Tipo de Galaxia Estimado</h2>
         <p><strong>Clasificación:</strong> {data.classification}</p>
