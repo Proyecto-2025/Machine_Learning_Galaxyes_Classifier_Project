@@ -19,24 +19,35 @@ def create_articles():
                 return jsonify({"error": f"Elemento #{idx} no es un objeto JSON válido"}), 400
 
             titulo = item.get("titulo")
-            if not titulo or not isinstance(titulo, str):
-                return jsonify({"error": f"Elemento #{idx} sin 'titulo' válido"}), 400
-
             resumen = item.get("resumen")
             foto = item.get("foto")
-            cuerpo = item.get("cuerpoArticulo")
+
+            cuerpo = item.get("cuerpo_articulo")
+            if cuerpo is None:
+                cuerpo = item.get("cuerpoArticulo")
+
+            if not titulo or not isinstance(titulo, str) or not titulo.strip():
+                return jsonify({"error": f"Elemento #{idx} sin 'titulo' válido"}), 400
+            if not resumen or not isinstance(resumen, str) or not resumen.strip():
+                return jsonify({"error": f"Elemento #{idx} sin 'resumen' válido"}), 400
+            if not cuerpo or not isinstance(cuerpo, str) or not cuerpo.strip():
+                return jsonify({"error": f"Elemento #{idx} sin 'cuerpo_articulo' válido"}), 400
 
             article = Article(
                 titulo=titulo.strip(),
-                resumen=resumen.strip() if isinstance(resumen, str) else resumen,
+                resumen=resumen.strip(),
                 foto=foto.strip() if isinstance(foto, str) else foto,
-                cuerpo_articulo=cuerpo if isinstance(cuerpo, str) else cuerpo,
+                cuerpo_articulo=cuerpo.strip(),
             )
             db.session.add(article)
             created.append(article)
 
         db.session.commit()
-        return jsonify([article_to_dict(a) for a in created]), 201
+
+        if isinstance(data, list):
+            return jsonify([article_to_dict(a) for a in created]), 201
+        else:
+            return jsonify(article_to_dict(created[0])), 201
 
     except Exception as e:
         db.session.rollback()

@@ -1,8 +1,8 @@
-"""create article table
+"""init schema (articles, image_model)
 
-Revision ID: 80a718963499
-Revises: ac24ee03295f
-Create Date: 2025-09-25 18:49:03.013744
+Revision ID: 28bea18bc91b
+Revises: 
+Create Date: 2025-10-18 17:47:54.941372
 
 """
 from alembic import op
@@ -10,8 +10,8 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = '80a718963499'
-down_revision = 'ac24ee03295f'
+revision = '28bea18bc91b'
+down_revision = None
 branch_labels = None
 depends_on = None
 
@@ -30,7 +30,9 @@ def upgrade():
     op.create_table('image_model',
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('filename', sa.String(length=255), nullable=False),
-    sa.Column('features', sa.Text(), nullable=False),
+    sa.Column('prediction', sa.JSON(), nullable=False),
+    sa.Column('features', sa.JSON(), nullable=False),
+    sa.Column('hubble_sequence', sa.JSON(), nullable=False),
     sa.Column('creation_date', sa.DateTime(), nullable=True),
     sa.PrimaryKeyConstraint('id')
     )
