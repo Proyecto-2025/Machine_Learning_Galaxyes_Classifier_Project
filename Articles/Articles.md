@@ -7,7 +7,7 @@
 
 # Possibles Articles
 - [x] Hubble Sequence
-- [ ] Ellipticals Galaxies
+- [x] Ellipticals Galaxies
 - [ ] Spiral Galaxies
 - [ ] Lenticulars Galaxies
 - [ ] Barred Galaxies
@@ -101,6 +101,47 @@ Such examinations sometimes also reclassify elliptical galaxies into other types
 - Lenticulars Galaxies
 
 ## Spiral Galaxies
+
+### Resume
+An spiral galaxy consist of a flat, rotating disk containing stars, gas and dust, and a central concentration of stars known as the bulge. They are one of the three main classes of galaxy described by the Hubble sequence, along with elliptical and lenticular galaxies.
+
+### Image
+
+### Body
+Spiral galaxies are one of the three main classes of galaxy described by the Hubble sequence. They consist of a galactic disk containing stars, gas and dust; a bulge that is a central concentration of stars; and often surrounded by a much fainter halo of stars and dark matter.
+
+Spiral galaxies are mostly found in low-density regions and are rare in the centers of galaxy clusters, they are named by their spiral structures given by their spiral arms that are sites of ongoing star formation and are brighter than the surrounding disc because of the young, hot OB stars that inhabit them.
+
+Two-thirds are observed to have an additional component in the form of a bar-like structure, extending from the central bulge to the beginning of spiral arms.
+
+So spiral galaxies may consist of several distinct components:
+
+A galactic disk in which spiral arms are prominent components
+A central stellar bulge of mainly older stars, which resembles an elliptical galaxy.
+A bar-shaped distribution of stars.
+A halo of stars, dark matter, and globular clusters.
+A supermassive black hole at the very center of the bulge.
+
+The relative importance, in terms of mass, brightness and size, of the different components varies from galaxy to galaxy.
+
+The Milky Way is a barred spiral, although the bar itself is difficult to observe from Earth's current position within the galactic disc.
+
+A bulge is a tightly packed group of stars within a larger star formation, many are thought to host a supermassive black hole at their centers. In our own galaxy, for instance, the object called Sagittarius A* is a supermassive black hole. 
+
+The spiral arms are regions of stars situated within discs that extend from the center of barred and unbarred spiral galaxies. They contain many young, hot, blue stars which exhibit heightened brightness relative to their surrounding environment, and have a nebulae (gas clouds), dust, and star-forming regions. They’re not solid or permanent structures rather, they are patterns of higher density (called density waves) moving through the galactic disc.
+
+Bar-shaped elongations of stars are observed in roughly two-thirds of all spiral galaxies.
+
+The creation of the bars in barred spiral galaxies are generally thought to be the result of a density wave radiating from the center of the galaxy whose effects reshape the orbits of the inner stars. This effect builds over time to stars orbiting farther out, which creates a self-perpetuating bar structure.
+
+The bar structure is believed to act as a type of stellar nursery, channeling gas inwards from the spiral arms through orbital resonance, fueling star birth in the vicinity of its center. This process is also thought to explain why many barred spiral galaxies have active galactic nuclei.
+
+Bars are thought to be temporary phenomena in the lives of spiral galaxies; the bar structures decay over time, transforming galaxies from barred spirals to more "regular" spiral patterns.
+
+### Ralated Articles
+- Hubble Sequence
+- Galactic Halo
+- Black Holes
 
 ## Lenticulars Galaxies
 
