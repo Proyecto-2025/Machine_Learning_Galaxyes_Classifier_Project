@@ -15,27 +15,36 @@ export default function PredictResults({onBack}) {
     <div className="results">
       <h2 className="headers">Resultados de Predicción</h2>
       <div className="section">
+        
         <h2 className="headers">Archivo recidido</h2>
-        <p><strong>Archivo:</strong> {data.filename}</p>
+        <p>{data.filename}</p>
+
       </div>
       <div className="section">
-        <h2 className="headers">Features</h2>
-        {data.features.map((feature,index)=>(
-          <p key={index}>{feature}</p>
-        ))}
+      
+          <h2 className="headers">Features</h2>
+         
+          <div id="features">
+            {data.features.map((feature,index)=>(
+              <p key={index}>{feature}</p>
+            ))}
+          </div>
+       
       </div>
       <div className="section">
-        <h2 className="headers">Tipo de Galaxia Estimado</h2>
-        <p><strong>Clasificación:</strong> {data.classification}</p>
+        
+          <h2 className="headers">Tipo de Galaxia Estimado</h2>
+          
+          <p>HardCoded Result, TODO Implement Backend Clasification prediction</p>
+        
       </div>
       {/*<p><strong>Mensaje:</strong> {data.message}</p> */}
-      <div className="section">
-        <button className="results-btn" onClick={onBack}>
+      <div id="botonsContainer">
+
+        <button className="results-btn" onClick={handleBack}>
           Subir otra imagen
         </button>
-        <button onClick= {handleBack}>
-          Ir a /predict
-        </button>
+        
       </div>
     </div>
   );

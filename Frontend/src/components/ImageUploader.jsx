@@ -62,7 +62,7 @@ export default function ImageUploader({onError,onSuccess}){
 
       <button
         onClick={handleUpload}
-        className="uploader-btn"
+        id="uploader-btn"
         disabled={!image || uploading}
       >
         {uploading ? "Enviando..." : "Enviar al backend"}
