@@ -49,11 +49,20 @@ class Response:
         self.map_features()
         self.__HubbleSequence = []
         self.__limit = 0.5
+        self.classify()
 
     @property
     def prediction(self):
         return self.__prediction
 
+    @property
+    def features(self):  # <-- getter público
+        return self.__features
+    
+    @property
+    def hubble_sequence(self):
+        return self.__HubbleSequence
+    
     @prediction.setter
     def prediction(self, value):
         self.__prediction = value
@@ -83,7 +92,7 @@ class Response:
             return self.__HubbleSequence
 
         # 03 ¿Barra central?
-        bar = "CON BARRA ATRAVESANDO EL CENTRO DE LA GALAXIA" in self.__features
+        bar = "BARRA ATRAVESANDO EL CENTRO DE LA GALAXIA" in self.__features
         # 04 ¿Patrón de brazos espirales?
         spiral = "CON PATRON DE BRAZOS ESPIRALES" in self.__features
 

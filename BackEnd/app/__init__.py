@@ -1,7 +1,10 @@
+import sys, os
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../..')))
 from flask import Flask
 from flask_cors import CORS
-from app.routes.routes import api_bp
-from app.db import db, migrate
+from .routes.routes import api_bp
+from .db import db, migrate
+from MLmodel.predict_controller import controller_bp
 #from app.models import image_model
 
 def create_app():
@@ -22,5 +25,6 @@ def create_app():
       
     #Registro del blueprint de rutas en la app 
     app.register_blueprint(api_bp)
+    app.register_blueprint(controller_bp)
     
     return app

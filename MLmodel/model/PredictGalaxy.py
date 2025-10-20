@@ -1,8 +1,11 @@
+from pathlib import Path
+
 import tensorflow as tf
 from tensorflow.keras.models import load_model
 
 
-model = load_model("galaxy_model.h5")
+model_path = Path(__file__).parent / "galaxy_model.h5"
+model = load_model(model_path)
 
 IMG_SIZE = 64
 
