@@ -28,17 +28,8 @@ def upload_file():
 
     # 4. Respuesta exitosa
     return jsonify({
-        "message": "Imagen recibida correctamente",
-        "file": file.filename,
-        "path": file_path,  # para debug
-        "classification": "tipo_galaxia",
-        "c0": "0.0",
-        "c1": "0.1",
-        "c2": "0.2",
-        "c3": "0.3",
-        "c3": "0.4",
-        "c4": "0.5",
-        "c5": "0.6"
+        "filename": file.filename,
+        "features": ["feature1", "feature2", "feature3"]
     }), 200
 
 @app.route("/articles")

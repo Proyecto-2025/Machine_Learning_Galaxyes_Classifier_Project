@@ -1,73 +1,49 @@
 import { useState } from "react";
-import ErrorMessage from "./ErrorMessage"
-import PredictResults from "./PredictResults";
-import "./style/ImageUploader.css";
+import "./style/ImageUploader.css"
 
-export default function ImageUploader() {
-  const [image, setImage] = useState(null);
-  const [error, setError] = useState(null);
-  const [results, setResults] = useState(null);
+export default function ImageUploader({onError,onSuccess}){
+  const [image,setImage] = useState(null);
+  const [uploading,setUploading] = useState(null);
 
-   const handleFileSelect = (e) => {
-    const file = e.target.files[0];
-    if (file) {
+  const handleFileSelect = (e) => {
+    if(e.target.files){
+      const file = e.target.files[0];
       setImage({
-        file, // ✅ importante para el upload
+        file,
         url: URL.createObjectURL(file),
         name: file.name,
       });
     }
-  };
+  }
 
-  // Enviar imágenes al backend
   const handleUpload = async () => {
+    if (!image) return;
 
     const formData = new FormData();
-    formData.append("image",image.file);
+    formData.append("image", image.file);
 
     try {
+      setUploading(true);
       const response = await fetch("http://127.0.0.1:5000/upload", {
         method: "POST",
         body: formData,
       });
 
-      if (!response.ok) throw new Error("Error al subir las imágenes");
+      if (!response.ok) throw new Error("Error al subir la imagen");
 
       const data = await response.json();
-      console.log("Respuesta del backend:", data);
-
-      if (data.error) {
-      // 🔹 si el backend devuelve { error: ... }
-        setError(data.error);
-      } else {
-        setImage(null);
-        setResults(data);
-      }
-      } catch (err) {
-        console.error("Error en la subida:", err);
-        setError(err.message); // 🔹 guarda el mensaje de error
-        setImage(null)
-      }
-    };
-    if (error) {
-      return <ErrorMessage message={error} onRetry={() => setError(null)} />;
+      console.log(data)
+      onSuccess?.(data);
+    }catch(err) {
+      onError?.(err.message); 
+    }finally {
+      setUploading(false);
     }
-
-    if (results) {
-      return <PredictResults 
-        data={results} 
-        onBack={() => setResults(null)}
-        onRetry={
-          () => {setResults(null);
-          window.location.href = "/predict";
-          } 
-        }
-        />;
-
-    }
+  };
 
   return (
     <div className="uploader">
+      <h1>Share you galaxy image with us!</h1>
       <input
         type="file"
         accept="image/*"
@@ -84,8 +60,12 @@ export default function ImageUploader() {
         )}
       </div>
 
-      <button onClick={handleUpload} className="uploader-btn" disabled={!image}>
-        Enviar al backend
+      <button
+        onClick={handleUpload}
+        className="uploader-btn"
+        disabled={!image || uploading}
+      >
+        {uploading ? "Enviando..." : "Enviar al backend"}
       </button>
     </div>
   );
