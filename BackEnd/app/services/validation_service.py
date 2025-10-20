@@ -31,5 +31,5 @@ def validate_image(file):
     img.verify() 
   except Exception:
     return False, "El archivo no es una imagen válida."
-
+  file.seek(0)
   return True, "Imagen válida."

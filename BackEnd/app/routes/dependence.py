@@ -1,8 +1,11 @@
 
-from ..services.db_service import DbService
-from ..services.file_storage_service import FileStorageService
-from ..services.com_service import ComService
+from flask import current_app
 
-db_service = DbService()
-file_storage_service = FileStorageService()
-com_service = ComService(db_service=db_service, storage_service=file_storage_service)
+def get_com_service():
+    return current_app.com_service
+
+def get_db_service():
+    return current_app.db_service
+
+def get_storage_service():
+    return current_app.storage_service

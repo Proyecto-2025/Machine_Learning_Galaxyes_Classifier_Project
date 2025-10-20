@@ -5,9 +5,9 @@ import random
 from . import api_bp
 from ..db import db
 from ..models.image_model import ImageModel
-from .dependence import db_service
+from .dependence import get_db_service
 
-@api_bp.route("/play", methods=["POST"])
+@api_bp.route("/play", methods=["GET"])
 def play():
     try:
         ids = [row[0] for row in db.session.query(ImageModel.id).all()]
@@ -16,6 +16,8 @@ def play():
 
         random.seed(int(datetime.utcnow().timestamp()))
         random_id = random.choice(ids)
+        
+        db_service = get_db_service()
 
         random_image = db_service.search_image_by_id(random_id)
         if not random_image:
