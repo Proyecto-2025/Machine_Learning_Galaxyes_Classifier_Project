@@ -6,6 +6,7 @@
   gap: 1rem;
   padding: 1.5rem;
   width: 60vw;
+  min-height: fit-content;
   height: 35vh;
   background: rgba(0, 0, 0, 0.5);
   border-radius: 10px;
