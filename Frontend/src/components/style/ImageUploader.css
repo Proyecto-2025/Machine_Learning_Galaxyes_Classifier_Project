@@ -6,8 +6,9 @@
   gap: 1rem;
   padding: 1.5rem;
   width: 60vw;
+  min-height: fit-content;
   height: 35vh;
-  background: rgba(0, 0, 0, 0.5);
+  background: rgba(0, 0, 0, 0.7);
   border-radius: 10px;
 }
 
@@ -45,18 +46,44 @@
   text-align: center;
   color: #444;
 }
-.uploader-btn {
-  margin: 0rem;
-  padding: 10px 20px;
+
+#uploader-btn {
+  position: relative;
+  color: #fff;
   border: none;
-  background-color: #2d89ef;
-  color: white;
-  border-radius: 6px;
+  padding: 0.8rem 2rem;
+  font-size: 1.1rem;
+  font-weight: 600;
+  border-radius: 12px;
   cursor: pointer;
-  font-size: 1rem;
-  transition: background 0.2s ease;
+  transition: all 0.3s ease;
+  box-shadow: 0 0 15px rgba(76, 201, 240, 0.3);
+  overflow: hidden;
+}
+#uploader-btn {
+  transform: translateY(-2px) scale(1.03);
+  box-shadow: 0 0 25px rgba(76, 201, 240, 0.6);
+  background: linear-gradient(20deg, #040237ec,#48179c, #0f6cb8, #07c293);
 }
 
-.uploader-btn:hover {
-  background-color: #1a5fb4;
+/* efecto de “destello” animado */
+#uploader-btn::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -75%;
+  width: 50%;
+  height: 100%;
+  background: linear-gradient(
+    120deg,
+    transparent,
+    rgba(255, 255, 255, 0.5),
+    transparent
+  );
+  transform: skewX(-25deg);
+  transition: left 0.7s ease;
+}
+
+#uploader-btn:hover::before {
+  left: 125%;
 }

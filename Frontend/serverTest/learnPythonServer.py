@@ -29,7 +29,7 @@ def upload_file():
     # 4. Respuesta exitosa
     return jsonify({
         "filename": file.filename,
-        "features": ["feature1", "feature2", "feature3"]
+        "features": ["feature1", "feature2", "feature3","feature4", "feature5", "feature6","feature7", "feature8", "feature9"]
     }), 200
 
 @app.route("/articles")
