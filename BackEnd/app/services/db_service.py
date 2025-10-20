@@ -1,22 +1,23 @@
-from ..models.image_model import ImageModel
-from ..db import db
+from app.models.image_model import ImageModel
+from app.db import db
 from datetime import datetime
 from sqlalchemy import extract
-
+import json
 
 class DbService:
     
    @staticmethod
-   def save_prediction(filename: str, features: list[str]):
+   def save_prediction(filename: str, prediction: list[float], features: list[str], hubble_sequence: list[str] ):
        
        img = ImageModel(
            filename = filename,
-           creation_date = datetime.utcnow()
+           prediction = prediction,
+           features = features,
+           hubble_sequence = hubble_sequence,
+           creation_date = datetime.now()
        ) 
-       img.set_features(features)
        db.session.add(img)
        db.session.commit()
-       return img
    
    #For gaming purpose? 
    def search_image_by_id(self, image_id: int) -> ImageModel | None:

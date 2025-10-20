@@ -1,61 +1,37 @@
+import io
+from PIL import Image
 import requests
-from .file_storage_service import FileStorageService
 
+class ComService:       
+    def process(self, image_bytes_io):
+        """
+        Recibe un io.BytesIO con la imagen
+        """
+        ml_engine_url = "http://localhost:5001/predict"
 
-class ComService:
-    def __init__(self, db_service, storage_service):
-        
-        #self.ml_engine = ml_engine
-        
-        self.db_service = db_service
-        
-        self.storage_service = storage_service
-        
-    def process(self, image_file):
-
-        filename = getattr(image_file, "filename", "upload.bin")
-        mimetype = getattr(image_file, "mimetype", "application/octet-stream")
-
-        # Leer bytes
-        raw = image_file.read()
-        if not raw:
-            raise ValueError("archivo vacío")
-
-        # POST al microservicio IA 
-        files = {"image": (filename, raw, mimetype)}
         try:
-            resp = requests.post(f"{self.ml_base_url}/predict", files=files, timeout=self.timeout)
-            resp.raise_for_status()
-        except requests.RequestException as e:
-            raise RuntimeError(f"ml service error: {e}")
+            # Convertir a PIL.Image para asegurar formato correcto
+            img = Image.open(image_bytes_io)
+            img_bytes_io = io.BytesIO()
+            img.save(img_bytes_io, format=img.format or "JPEG")
+            img_bytes_io.seek(0)
 
-        #guardar respuesta prediccion
-        ml_json = resp.json()              
-        features = ml_json.get("features", [])
+            # Enviar al ML Engine
+            files = {"image": ("uploaded_image.jpg", img_bytes_io, "image/jpeg")}
+            response = requests.post(ml_engine_url, files=files, timeout=10)
+            response.raise_for_status()
 
-        #Rewind para guardar con tu storage actual 
-        try:
-            image_file.stream.seek(0)
-            image_bytes = image_file.stream.read()
-            image_path = self.storage_service.save(image_bytes)
-        except Exception:
+            return response.json()
 
-            raise
+        except requests.exceptions.ConnectionError:
+            return {"error": "Unable to connect to ML Engine"}
+        except requests.exceptions.Timeout:
+            return {"error": "Exceeded wait time while connecting to ML Engine"}
+        except requests.exceptions.RequestException as e:
+            return {"error": f"HTTP Error: {str(e)}"}
+        except ValueError:
+            return {"error": "Invalid JSON response from ML Engine"}
+        except Exception as e:
+            return {"error": f"Unexpected error: {str(e)}"}
 
-        # Guardar predicción completa en DB 
-        saved_image = self.db_service.save_prediction(image_path, features)
 
-        # Buscar una imagen cualquiera que cumpla esos features
-        similar_images = self.db_service.search_by_features(features)
-        
-        # excluimos la imagen recien cargada
-        similar_images = [img for img in similar_images if img.id != saved_image.id]
-        
-        # guardamos la ruta de la primer imagen que cumpla con las caracteristicas (si existe)
-        similar_image_filename = similar_images[0].filename if similar_images else None
-        
-        # Devolver tal cual al caller
-        return {
-            "similar_image_filename": similar_image_filename,
-            "features": features
-        }
