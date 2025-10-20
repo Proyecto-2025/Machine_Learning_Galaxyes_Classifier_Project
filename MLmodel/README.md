@@ -5,11 +5,10 @@ Este microservicio proporciona predicciones de clasificación de galaxias utiliz
 ## Características
 
 - API REST para predicción de galaxias
-- Modelo TensorFlow pre-entrenado
+- Modelo TensorFlow basado en AlexNet
 - Clasificación según la secuencia de Hubble
 - Health check endpoint
 - Microservicio independiente y desplegable por separado
-- Configuración simplificada
 
 ## Estructura del Proyecto
 
@@ -21,9 +20,9 @@ MLmodel/
 ├── model/                # Modelo ML y lógica
 │   ├── PredictGalaxy.py  # Función de predicción
 │   ├── Response.py       # Procesamiento de respuestas
-│   └── galaxy_model.h5   # Modelo pre-entrenado
+│   └── galaxy_model.h5   # Modelo entrenado
 ├── requirements.txt      # Dependencias Python
-└── README.md           # Este archivo
+└── README.md
 ```
 
 ## Instalación y Ejecución
@@ -63,7 +62,7 @@ Predice la clasificación de una galaxia a partir de una imagen.
 {
     "prediction": [0.1, 0.8, 0.3, ...],
     "features": ["SUAVE", "VISTA DE PERFIL", ...],
-    "hubblesequence": [0.1, 0.8, 0.3, ...]
+    "hubblesequence": [S...]
 }
 ```
 
