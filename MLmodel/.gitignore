@@ -2,3 +2,5 @@ __pycache__
 Dockerfile
 Makefile
 dataset
+
+.env
