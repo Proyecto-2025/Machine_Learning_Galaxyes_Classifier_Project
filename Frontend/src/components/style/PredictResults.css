@@ -19,6 +19,7 @@
 .section {
   display: grid;
   grid-template-rows: 1fr 1fr;
+  border-top: 2px solid white;
 }
 
 
