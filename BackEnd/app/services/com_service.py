@@ -10,13 +10,11 @@ class ComService:
         ml_engine_url = "http://localhost:5001/predict"
 
         try:
-            # Convertir a PIL.Image para asegurar formato correcto
             img = Image.open(image_bytes_io)
             img_bytes_io = io.BytesIO()
             img.save(img_bytes_io, format=img.format or "JPEG")
             img_bytes_io.seek(0)
 
-            # Enviar al ML Engine
             files = {"image": ("uploaded_image.jpg", img_bytes_io, "image/jpeg")}
             response = requests.post(ml_engine_url, files=files, timeout=10)
             response.raise_for_status()

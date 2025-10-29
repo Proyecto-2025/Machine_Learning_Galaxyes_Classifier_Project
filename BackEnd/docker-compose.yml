@@ -1,5 +1,3 @@
-version: '3.9'
-
 services:
   backend:
     build: .
@@ -11,6 +9,10 @@ services:
       - sqlite_data:/app/instance
     environment:
       FLASK_ENV: development
+      R2_ACCOUNT_ID: fb27ce9ecf81190b9aeef7b90820be52
+      R2_ACCESS_KEY_ID: a3f45aa4370e66e082006e986e532c4d
+      R2_SECRET_ACCESS_KEY: 7318d5529db6d838c614d8dd6fa19c9f9be614d9f989d31592c19f38888338b9
+      R2_BUCKET_NAME: chadia-images
     command: ["python", "run.py"]
 
 volumes:

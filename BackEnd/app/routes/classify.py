@@ -34,7 +34,7 @@ def classify():
         hubble_sequence = result.get("hubblesequence")
 
         # Save image locally
-        filename = storage_service.save(io.BytesIO(image_bytes))
+        filename = storage_service.save(image)
 
         # Save prediction on DB
         db_service.save_prediction(filename, prediction, features, hubble_sequence)

@@ -1,40 +1,41 @@
+import boto3
+from botocore.client import Config
+import time
+from werkzeug.utils import secure_filename
 import os
-import uuid
-from datetime import datetime
-from PIL import Image
-import io
+
 
 class FileStorageService:
-    def __init__(self, base_dir="uploads"):
-        self.base_dir = base_dir
-        os.makedirs(base_dir, exist_ok=True)
+    def __init__(self):
+        self.bucket_name = os.environ.get("R2_BUCKET_NAME")
+        self.account_id = os.environ.get("R2_ACCOUNT_ID")
+        self.access_key = os.environ.get("R2_ACCESS_KEY_ID")
+        self.secret_key = os.environ.get("R2_SECRET_ACCESS_KEY")
+        
+        if not all([self.bucket_name, self.account_id, self.access_key, self.secret_key]):
+            raise ValueError("Faltan credenciales de R2 en las variables de entorno")
+            
+        self.client = boto3.client(
+            "s3",
+            region_name = "auto",
+            endpoint_url = f"https://{self.account_id}.r2.cloudflarestorage.com",
+            aws_access_key_id = self.access_key,
+            aws_secret_access_key = self.secret_key,
+            config = Config(signature_version = "s3v4")
+        )
 
     def save(self, image):
-        """
-        image puede ser:
-        - FileStorage de Flask
-        - io.BytesIO o bytes
-        """
-        # Convertir FileStorage a bytes si es necesario
-        if hasattr(image, "read"):
-            image_bytes = image.read()
-            image.seek(0)  # opcional
-        else:
-            # io.BytesIO o bytes
-            if isinstance(image, io.BytesIO):
-                image_bytes = image.getvalue()
-            else:
-                image_bytes = image
-
-        today = datetime.now().strftime("%d-%m-%Y")
-        date_dir = os.path.join(self.base_dir, today)
-        os.makedirs(date_dir, exist_ok=True)
-
-        img = Image.open(io.BytesIO(image_bytes))
-        ext = f".{img.format.lower()}"  # Obtener extensión
-
-        filename = f"{uuid.uuid4().hex}{ext}"
-        filepath = os.path.join(date_dir, filename)
-
-        img.save(filepath)
+        
+        #set an unique filename
+        original_name = secure_filename(image.filename)
+        timestamp = int(time.time())
+        filename = f"{timestamp}_{original_name}"
+        
+        # uploads the file
+        self.client.upload_fileobj(image, self.bucket_name, filename)
+        
+        #builds the filepath
+        filepath = f"https://{self.bucket_name}.{self.account_id}.r2.cloudflarestorage.com/{filename}"
+        
         return filepath
+        
