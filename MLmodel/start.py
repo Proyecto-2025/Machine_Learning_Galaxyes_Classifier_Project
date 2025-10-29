@@ -8,14 +8,17 @@ import sys
 from app import create_app
 
 def main():
+    # Leer puerto de variable de entorno (Cloud Run usa PORT=8080)
+    port = int(os.environ.get('PORT', 5001))
+
     print("🚀 Iniciando microservicio ML...")
-    print("📍 Puerto: 5001")
-    print("🌐 URL: http://localhost:5001")
+    print(f"📍 Puerto: {port}")
+    print(f"🌐 URL: http://0.0.0.0:{port}")
     print("-" * 40)
     
     try:
         app = create_app()
-        app.run(host='0.0.0.0', port=5001, debug=True)
+        app.run(host='0.0.0.0', port=port, debug=True)
     except KeyboardInterrupt:
         print("\n👋 Microservicio detenido")
         sys.exit(0)

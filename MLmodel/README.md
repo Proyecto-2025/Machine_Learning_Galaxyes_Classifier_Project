@@ -11,6 +11,7 @@ Este microservicio proporciona predicciones de clasificación de galaxias utiliz
 - **Health check endpoint** para monitoreo
 - **Microservicio independiente** y desplegable por separado
 - **Dockerizado** para fácil despliegue
+- **Desplegado en producción** en Google Cloud Run: https://galaxy-classifier-279086139631.us-central1.run.app
 
 ## Arquitectura del Modelo
 
@@ -130,6 +131,22 @@ docker build -t galaxy-classifier-ml .
 docker run -p 5001:5001 galaxy-classifier-ml
 ```
 
+### 3. Despliegue en Producción (Google Cloud Run)
+
+El microservicio está desplegado en Google Cloud Run y disponible públicamente:
+
+**URL de Producción:** https://galaxy-classifier-279086139631.us-central1.run.app
+
+#### Health Check en Producción:
+```bash
+curl https://galaxy-classifier-279086139631.us-central1.run.app/health
+```
+
+#### Test de Predicción en Producción:
+```bash
+curl -X POST -F "image=@ruta/a/imagen.jpg" https://galaxy-classifier-279086139631.us-central1.run.app/predict
+```
+
 ### Verificación del Despliegue
 
 #### Health Check:
@@ -215,9 +232,17 @@ El modelo clasifica las galaxias según la secuencia de Hubble:
 
 El backend principal debe configurar el `ComService` con la URL del microservicio ML:
 
+### Configuración para Desarrollo Local:
 ```python
 # En com_service.py
-self.ml_base_url = "http://localhost:5001"  # URL del microservicio ML
+self.ml_base_url = "http://localhost:5001"  # URL del microservicio ML local
+self.timeout = 30  # Timeout en segundos
+```
+
+### Configuración para Producción:
+```python
+# En com_service.py
+self.ml_base_url = "https://galaxy-classifier-279086139631.us-central1.run.app"  # URL de producción
 self.timeout = 30  # Timeout en segundos
 ```
 
@@ -225,8 +250,12 @@ self.timeout = 30  # Timeout en segundos
 ```python
 import requests
 
-def classify_galaxy(image_file):
-    url = "http://localhost:5001/predict"
+def classify_galaxy(image_file, production=False):
+    if production:
+        url = "https://galaxy-classifier-279086139631.us-central1.run.app/predict"
+    else:
+        url = "http://localhost:5001/predict"
+    
     files = {"image": image_file}
     response = requests.post(url, files=files, timeout=30)
     return response.json()
@@ -235,14 +264,27 @@ def classify_galaxy(image_file):
 ## Monitoreo y Logs
 
 ### Health Check
+
+#### Desarrollo Local:
 ```bash
 curl http://localhost:5001/health
+```
+
+#### Producción:
+```bash
+curl https://galaxy-classifier-279086139631.us-central1.run.app/health
 ```
 
 ### Logs del Contenedor
 ```bash
 docker logs galaxy-ml
 ```
+
+### Monitoreo en Producción
+El servicio está desplegado en Google Cloud Run y puede ser monitoreado a través de:
+- **Google Cloud Console**: Logs y métricas del servicio
+- **Health Check**: Endpoint `/health` disponible públicamente
+- **URL de Producción**: https://galaxy-classifier-279086139631.us-central1.run.app
 
 ## Desarrollo
 
