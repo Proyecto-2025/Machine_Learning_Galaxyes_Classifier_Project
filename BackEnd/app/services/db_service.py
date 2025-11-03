@@ -1,5 +1,7 @@
-from app.models.image_model import ImageModel
-from app.db import db
+from ..models.image_model import ImageModel
+from ..models.user_model import User
+from ..models.user_info_model import UserInfo
+from ..db import db
 from datetime import datetime
 from sqlalchemy import extract
 import json
@@ -59,6 +61,22 @@ class DbService:
            query = query.filter(extract("day", ImageModel.creation_date) == day)   
        
        return query.all()
+   
+   def save_user_and_info(self, email: str, password_hash: str, username: str):
+       user = User(
+           email = email,
+           password_hash = password_hash
+        )
+       #Asociates info to the current user...
+       user.info = UserInfo(username = username)
+       #... so when you add user, you're also adding user_info with user id
+       db.session.add(user)
+       db.session.commit()
+       
+   def search_user_by_email(email: str):
+        existing_user = User.query.filter_by(email).first()
+        return existing_user
+       
    
    
    
