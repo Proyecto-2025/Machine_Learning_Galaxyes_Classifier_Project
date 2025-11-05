@@ -28,7 +28,14 @@ def classify():
         # Call to ML Engine
         result = com_service.process(io.BytesIO(image_bytes))
 
-        # Extract prediction
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+    
+    required_keys = {"prediction", "features", "hubblesequence"}
+    
+    if result and isinstance(result, dict) and required_keys.issubset(result.keys()):
+        
+         # Extract prediction
         prediction = result.get("prediction")
         features = result.get("features")
         hubble_sequence = result.get("hubblesequence")
@@ -41,6 +48,7 @@ def classify():
 
         # Return to client
         return jsonify(result), 200
-
-    except Exception as e:
-        return jsonify({"error": str(e)}), 500
+    
+    else:
+        return jsonify({"error": "Null or invalid response from the ML", 
+                        "response_recieved": result}), 500
