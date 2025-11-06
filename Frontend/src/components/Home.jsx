@@ -16,7 +16,7 @@ export default function Home() {
 
     return (
         <div className="home">
-            <h1> ChadIA- Galaxy Classifier </h1>
+            <h1> IAChad- Galaxy Classifier </h1>
             <div className="home-applications">
                 <ApplicationButton name={play.name} desc={play.desc} to={play.to}/>
                 <ApplicationButton name={predict.name} desc={predict.desc} to={predict.to}/>

@@ -2,6 +2,7 @@
 Flask>=3.0
 gunicorn>=21.2.0
 python-dotenv>=1.0.0
+flask_cors
 
 # --- Machine Learning / Deep Learning ---
 tensorflow>=2.13.0

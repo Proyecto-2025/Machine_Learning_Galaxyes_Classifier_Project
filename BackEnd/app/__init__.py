@@ -9,7 +9,11 @@ from .services.file_storage_service import FileStorageService
 from .services.com_service import ComService
 
 def create_app():
-    app = Flask(__name__, instance_relative_config=True)
+    
+    instance_path = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "instance")
+    os.makedirs(instance_path, exist_ok=True)
+    
+    app = Flask(__name__, instance_path=instance_path)
     os.makedirs(app.instance_path, exist_ok=True)
 
     db_path = os.path.join(app.instance_path, "database.db")
@@ -22,18 +26,18 @@ def create_app():
     # Init DB
     db.init_app(app)
 
-    # IMPORTAR MODELOS 
+    # Import models 
     from . import models
 
     # Init Migrations
     migrate.init_app(app, db)
     
-    # Crear servicios
+    # Create services
     db_service = DbService()
     storage_service = FileStorageService()
     com_service = ComService()
     
-    # Registrar servicios
+    # Register services
     app.db_service = db_service
     app.storage_service = storage_service
     app.com_service = com_service

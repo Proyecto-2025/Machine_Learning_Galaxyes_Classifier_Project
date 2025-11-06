@@ -15,32 +15,40 @@ def classify():
     db_service = get_db_service()
     storage_service = get_storage_service()
 
-    # 1️⃣ Validar imagen
+    # Validate image
     valid, message = validate_image(image)
     if not valid:
         return jsonify({"error": message}), 400
 
-    # 2️⃣ Leer bytes de la imagen una sola vez
+    
     image_bytes = image.read()
-    image.seek(0)  # reset para que se pueda guardar
+    image.seek(0)  
 
     try:
-        # 3️⃣ Llamar al ML Engine
+        # Call to ML Engine
         result = com_service.process(io.BytesIO(image_bytes))
 
-        # 4️⃣ Extraer predicción
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+    
+    required_keys = {"prediction", "features", "hubblesequence"}
+    
+    if result and isinstance(result, dict) and required_keys.issubset(result.keys()):
+        
+         # Extract prediction
         prediction = result.get("prediction")
         features = result.get("features")
         hubble_sequence = result.get("hubblesequence")
 
-        # 5️⃣ Guardar imagen en almacenamiento local
-        filename = storage_service.save(io.BytesIO(image_bytes))
+        # Save image locally
+        filename = storage_service.save(image)
 
-        # 6️⃣ Guardar predicción en la DB
+        # Save prediction on DB
         db_service.save_prediction(filename, prediction, features, hubble_sequence)
 
-        # 7️⃣ Devolver resultado al cliente
+        # Return to client
         return jsonify(result), 200
-
-    except Exception as e:
-        return jsonify({"error": str(e)}), 500
+    
+    else:
+        return jsonify({"error": "Null or invalid response from the ML", 
+                        "response_recieved": result}), 500
