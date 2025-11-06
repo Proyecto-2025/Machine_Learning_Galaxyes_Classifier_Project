@@ -3,10 +3,10 @@ import os
 from flask import Flask
 from flask_cors import CORS
 from .db import db, migrate
+
 from .services.db_service import DbService
 from .services.file_storage_service import FileStorageService
 from .services.com_service import ComService
-
 
 def create_app():
     
