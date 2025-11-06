@@ -7,7 +7,7 @@ class ComService:
         """
         Recibe un io.BytesIO con la imagen
         """
-        ml_engine_url = "http://localhost:5001/predict"
+        ml_engine_url = "https://galaxy-classifier-279086139631.us-central1.run.app/predict"
 
         try:
             img = Image.open(image_bytes_io)
@@ -16,7 +16,7 @@ class ComService:
             img_bytes_io.seek(0)
 
             files = {"image": ("uploaded_image.jpg", img_bytes_io, "image/jpeg")}
-            response = requests.post(ml_engine_url, files=files, timeout=10)
+            response = requests.post(ml_engine_url, files=files, timeout=100)
             response.raise_for_status()
 
             return response.json()
