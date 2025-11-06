@@ -2,30 +2,68 @@ import { useEffect, useState } from "react"
 import "./style/Play.css"
 
 export default function Play(){
+    const [image,setImage] = useState(null);
+    const [caracteris,setCaracteristics] = useState("");
+    const [guess,setGuess] = useState(null);
+    
     const [options, setOptions] = useState([
         { label: "Spiral", selected: false },
         { label: "Elliptical", selected: false },
         { label: "Lenticular", selected: false },
     ]);
 
+    useEffect(() => {
+        async function fetchImageData() {
+            try {
+                const res = await fetch("http://127.0.0.1:5000/randomImage");
+                const json = await res.json();
+                setImage(json.url);
+                setCaracteristics(json.hubblesequence);
+            } catch (error) {
+                console.error("Error fetching image:", error);
+            }
+        }
+        fetchImageData();
+    }, []);
+
     const handleClick = (id) => {
         setOptions(prev =>
-            prev.map((btn,idx) =>
-                id === idx ? { ...btn, selected: !btn.selected } : btn
-            )
+            prev.map((btn,idx) => (
+                id === idx 
+                    ? {...btn,selected:true}
+                    : {...btn,selected:false}
+            ))
         );
+    };
+
+    const handleGuess = () => {
+        const selected = options.find(opt => opt.selected == true)?.label;
+        if (!selected) {
+            alert("Please select a options first");
+            return
+        }
+
+        if (selected == caracteris) {
+            setGuess(true);
+        } else {
+            setGuess(false);
+        }
     };
 
     return (
         <div className="play">
             <div className="blur-background">
-                <h2>
-                    Play guessing between Elliptical, <br/>
-                    Spiral or Lenticular Galaxies
-                </h2>
-                <h4>Image from backend</h4>
-                <img src="http://127.0.0.1:5000/randomImage" />
+                <h2> Guess the type of Galaxy </h2>
+                <img src={image} />
                 <OptionSelector list={options} onClick={handleClick} />
+
+                <button className="btn" onClick={handleGuess}>Guess</button>
+
+                {guess !== null && (
+                    <p className="result">
+                        {guess ? "✅ Correct!" : "❌ Wrong!"}
+                    </p>
+                )}
             </div>
         </div>
     )
