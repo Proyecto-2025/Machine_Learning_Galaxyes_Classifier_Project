@@ -40,7 +40,7 @@ def classify():
         features = result.get("features")
         hubble_sequence = result.get("hubblesequence")
 
-        # Save image locally
+        # Save image remotely
         filename = storage_service.save(image)
 
         # Save prediction on DB

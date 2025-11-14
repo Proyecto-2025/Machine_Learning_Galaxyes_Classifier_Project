@@ -8,7 +8,7 @@ from .services.db_service import DbService
 from .services.file_storage_service import FileStorageService
 from .services.com_service import ComService
 
-def create_app():
+def create_app(db_service = None, storage_service = None, com_service = None):
     
     instance_path = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "instance")
     os.makedirs(instance_path, exist_ok=True)
@@ -31,16 +31,11 @@ def create_app():
 
     # Init Migrations
     migrate.init_app(app, db)
-    
-    # Create services
-    db_service = DbService()
-    storage_service = FileStorageService()
-    com_service = ComService()
-    
+       
     # Register services
-    app.db_service = db_service
-    app.storage_service = storage_service
-    app.com_service = com_service
+    app.db_service = db_service or DbService()
+    app.storage_service = storage_service or FileStorageService()
+    app.com_service = com_service or ComService()
 
     # Registrar blueprint
     from .routes import api_bp

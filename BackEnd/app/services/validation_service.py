@@ -23,7 +23,7 @@ def validate_image(file):
   file.seek(0,2)
   size_mb = file.tell() / (1024 * 1024)
   if size_mb > MAX_SIZE_MB:
-    return False, "El arhivo supera los 5MB"
+    return False, "El archivo supera los 5MB"
 
   #check procesar imagen
   try:
