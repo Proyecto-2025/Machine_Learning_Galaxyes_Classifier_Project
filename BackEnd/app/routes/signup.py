@@ -1,14 +1,13 @@
-from flask import jsonify, request
+from flask import jsonify, request, current_app
 from . import api_bp
-from dependence import get_db_service
 from ..services.password_service import PasswordService
 
 
-@api_bp.route("/api/v1/signup", methods = ["POST"])
+@api_bp.route("/signup", methods = ["POST"])
 
 def signup():
     
-    db_service = get_db_service
+    db_service = current_app.db_service
     data = request.get_json()
     
     if not data:

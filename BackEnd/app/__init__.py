@@ -39,7 +39,7 @@ def create_app(db_service = None, storage_service = None, com_service = None):
 
     # Registrar blueprint
     from .routes import api_bp
-    app.register_blueprint(api_bp, url_prefix="/api/v1")
+    app.register_blueprint(api_bp)
 
     # Logging
     app.logger.info(f"Using SQLite at: {db_path}")
