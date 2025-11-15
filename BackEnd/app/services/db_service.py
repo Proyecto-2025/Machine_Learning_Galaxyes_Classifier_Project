@@ -76,6 +76,9 @@ class DbService:
    def search_user_by_email(email: str):
         existing_user = User.query.filter_by(email).first()
         return existing_user
+    
+   def get_all_image_ids(self):
+        return [row[0] for row in db.session.query(ImageModel.id).all()]
        
    
    
