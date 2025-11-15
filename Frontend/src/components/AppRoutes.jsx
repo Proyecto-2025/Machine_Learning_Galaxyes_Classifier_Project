@@ -5,6 +5,8 @@ import About from './About.jsx'
 import Home from './Home.jsx'
 import Learn from './Learn.jsx'
 import Play from './Play.jsx'
+import SignIn from "./SignIn.jsx";
+import SignUp from "./SignUp.jsx";
 
 export default function AppRoutes() {
     return (
@@ -17,6 +19,8 @@ export default function AppRoutes() {
                     <Route path="/about" element={<About />} />
                     <Route path="/learn" element={<Learn />} />
                     <Route path="/play" element={<Play />} />
+                    <Route path="/signin" element={<SignIn />} />
+                    <Route path="/signup" element={<SignUp />} />
                 </Routes>
             </div>
         </>

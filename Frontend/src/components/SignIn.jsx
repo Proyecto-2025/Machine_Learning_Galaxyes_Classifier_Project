@@ -1,14 +1,16 @@
 import { useState } from "react";
-import "./style/SignIn.css"
-export default function SignUp() {
+import { useNavigate } from "react-router-dom";
+import "./style/SignIn.css";
+export default function SignIn() {
   const [form, setForm] = useState({
     nickname: "",
     password: "",
-    confirmPass: "",
   });
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+
+  const navigate = useNavigate(); // 👈 Para redirigir
 
   function handleChange(e) {
     const { name, value } = e.target;
@@ -20,33 +22,26 @@ export default function SignUp() {
 
   async function handleSubmit(e) {
     e.preventDefault();
+    setLoading(true);
     setError("");
 
-    if (form.password !== form.confirmPass) {
-      setError("Las contraseñas no coinciden");
-      return;
-    }
-
-    setLoading(true);
-
     try {
-      const res = await fetch("http://localhost:3000/api/register", {
+      const res = await fetch("http://localhost:3000/api/signin", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          nickname: form.nickname,
-          password: form.password,
-        }),
+        body: JSON.stringify(form),
       });
 
       if (!res.ok) {
         const data = await res.json();
-        throw new Error(data.message || "Error al registrarse");
+        throw new Error(data.message || "Error al iniciar sesión");
       }
 
       const data = await res.json();
-      console.log("Registro OK:", data);
-      alert("Cuenta creada con éxito!");
+      console.log("Login OK:", data);
+
+      // redirigir al home (puede ser otra ruta)
+      navigate("/");
 
     } catch (err) {
       setError(err.message);
@@ -56,11 +51,12 @@ export default function SignUp() {
   }
 
   return (
-    <div className="signin-container" >
+    <div className="signin-container">
+      
+      <h3>Sign In</h3>
+
       <form onSubmit={handleSubmit} >
-
-        <h3>Registro</h3>
-
+        
         <input
           type="text"
           name="nickname"
@@ -79,23 +75,21 @@ export default function SignUp() {
           required
         />
 
-        <input
-          type="password"
-          name="confirmPass"
-          placeholder="Confirmar Password"
-          value={form.confirmPass}
-          onChange={handleChange}
-          required
-        />
-
-        {error && <p style={{ color: "red" }}>{error}</p>}
+        {error && <p style={{ color:"red" }}>{error}</p>}
 
         <button type="submit" disabled={loading}>
-          {loading ? "Registrando..." : "Crear Cuenta"}
+          {loading ? "Ingresando..." : "Sign In"}
         </button>
-
       </form>
+
+      {/* Botón SignUp */}
+      <button
+        onClick={() => navigate("/signup")}
+        className="singup-btn"
+      >
+        ¿No tenés cuenta? Sign Up
+      </button>
+
     </div>
-    
   );
 }
