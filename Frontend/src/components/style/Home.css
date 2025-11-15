@@ -1,38 +1,67 @@
 .home {
     display: flex;
-    align-items: center;
     flex-direction: column;
-    justify-content: space-around;
-    padding: 0;
-    color: antiquewhite;    
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    color: antiquewhite;
+    font-family: 'Inter', sans-serif;
+}
+
+.home h1 {
+    font-size: 2rem;
+    margin-bottom: 2rem;
+    letter-spacing: 1px;
 }
 
 .home-applications {
     display: flex;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+    justify-content: center;
 }
 
+/* --- Botones --- */
 .home .blur-background {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
     text-decoration: none;
-    flex: 1;
-    margin: 0 10px;
-    height: 200px;
-    transition: background 0.3s, color 0.3s;
+    color: #eaeaea;
+    width: 180px;
+    height: 120px;
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(5px);
+    transition: all 0.25s ease-in-out;
+}
+
+.home .blur-background h3 {
+    font-size: 1.1rem;
+    margin-bottom: 0.4rem;
+    color: #fff;
+    transition: color 0.3s ease;
 }
 
 .home .blur-background p {
-    height: 0;
-    margin: 0;
-    visibility: hidden;
+    font-size: 0.8rem;
     text-align: center;
-    transition: opacity 0.2s ease, visibility 0s linear 0.17s
+    opacity: 0.6;
+    transition: opacity 0.3s ease;
 }
 
 .home .blur-background:hover {
-    background: rgba(0,0,0, 0.9);
+    transform: translateY(-4px);
+    border-color: rgba(86, 226, 228, 0.4);
+    background: rgba(255, 255, 255, 0.08);
+}
+
+.home .blur-background:hover h3 {
     color: #56e2e4;
 }
 
 .home .blur-background:hover p {
-    height: auto;
-    visibility: visible;
+    opacity: 1;
 }
