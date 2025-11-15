@@ -1,7 +1,7 @@
 # API Endpoint: /api/v1/classify
 
 ## Descripción
-Esta ruta permite enviar una imagen al backend, donde se valida, se procesa a traves de un motor ML para extraer sus caracteristicas(features), se guarda físicamente en almacenamiento local, se crea un registro en la base de datos, y se busca una imagen existente en la base de datos con caracteristicas similares. Finalmente, devuelve al frontend la ruta de la imagen encontrada (si existe) y la lista de caracteristicas extraídas.
+Esta ruta permite enviar una imagen al backend, donde se valida, se procesa a traves de un motor ML para extraer sus caracteristicas(features), se guarda físicamente en almacenamiento local y se crea un registro en la base de datos. Finalmente, devuelve al frontend la lista de caracteristicas extraídas.
 
 ## Método
 POST
@@ -29,12 +29,10 @@ curl -X POST http://localhost:5000/api/v1/classify \
    -F "image=@/ruta/a/mi/imagen.jpg"
 
 ## Respuesta exitosa (200 OK)
-{
-    "filename": "uploads/21-09-2025/3b1f4e2a5e6f4c1e9d7a.png",
-    "features": ["feature1", "feature2", "feature3"]
-}
-- filename: ruta de la imagen con caracteristicas similares de la DB    (puede ser null)
-- features: lista de caracteristicas extraídas por el ML Engine
+
+["feature1", "feature2", "feature3"]
+
+- lista de caracteristicas extraídas por el ML Engine
 
 ## Posibles errores
 - Código: 400, Mensaje: "no image provided" -> No se envió ningún archivo.
@@ -48,3 +46,47 @@ curl -X POST http://localhost:5000/api/v1/classify \
 Las imagenes se guardan en uploads/<dd-mm-yyyy>/ con nombres únicos generados por UUID.
 Las features se almacenan en la DB como JSON.
 Cada request guarda la imagen enviada y registra su predicción en la base de datos.
+
+
+# API Endpoint: /api/v1/play
+
+## Descripción
+Esta ruta selecciona de manera aleatoria un registro existente en la base de datos de imagenes y devuelve al frontend el nombre del archivo (URL) y la lista de caracteristicas (features) asociadas a esa imagen. 
+
+## Método
+POST
+
+## URL
+/api/v1/play
+
+## Headers
+Content-Type: application/json
+
+## Parámetros
+No recibe parametros.
+La selección es totalmente interna, el backend genera una semilla aleatoria basada en el tiempo actual y la utuliza para elegir un registro al azar entre los existentes en la base de datos.
+
+## Validaciones
+- Debe existir al menos un registro en la base de datos.
+- El ID aleatorio debe corresponder a un registro valido.
+
+## Ejemplo de request
+curl -X POST http://localhost:5000/api/v1/play \
+   -H "Content-Type: application/json"
+
+## Respuesta exitosa (200 OK)
+{
+    "filename": "imagen_123.jpg",
+    "features": ["spiral", "blue", "bright"]
+}
+
+- filename: dirección de almacenamiento de la imagen.
+- features: lista de caracteristicas extraídas por el ML Engine.
+
+## Posibles errores
+- Código: 500, Mensaje: "unexpected error" -> Error interno del backend (no se pudo acceder a la DB o no hay registros disponibles).
+
+## Notas
+La semilla usada para generar el número aleatorio se basa en la hora actual(UTC timestamp).
+La elección de la imagen es uniforme entre todas las que están registradas en la base de datos.
+No se requiere enviar información adicional en el request, el backend se encarga de todo el proceso.

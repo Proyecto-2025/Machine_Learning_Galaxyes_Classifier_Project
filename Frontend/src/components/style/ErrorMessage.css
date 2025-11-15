@@ -1,0 +1,60 @@
+.error-box {
+  padding: 1.5rem;
+  width: 50vw;
+  min-height: fit-content;
+  height: 25vh;
+  color:white;
+  background: #181313e0;
+  border-radius: 10px;
+  box-shadow: 0px 2px 6px rgba(0,0,0,0.15);
+  display: flex;
+  flex-direction: column;
+  gap: 2vh;
+  text-align: center;
+  justify-content: center;
+  align-items: center;
+}
+
+
+#tryagain-btn {
+  position: relative;
+  width: 60%
+  ;
+  color: #fff;
+  border: none;
+  padding: 0.8rem 2rem;
+  font-size: 1.1rem;
+  font-weight: 600;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 0 15px rgba(76, 201, 240, 0.3);
+  overflow: hidden;
+}
+#tryagain-btn {
+  transform: translateY(-2px) scale(1.03);
+  box-shadow: 0 0 25px rgba(76, 201, 240, 0.6);
+  background: linear-gradient(20deg, #040237ec,#48179c, #0f6cb8, #e8bf0a);
+}
+
+/* efecto de “destello” animado */
+#tryagain-btn::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -75%;
+  width: 50%;
+  height: 100%;
+  background: linear-gradient(
+    120deg,
+    transparent,
+    rgba(255, 255, 255, 0.5),
+    transparent
+  );
+  transform: skewX(-25deg);
+  transition: left 0.7s ease;
+}
+
+#tryagain-btn:hover::before {
+  left: 125%;
+}

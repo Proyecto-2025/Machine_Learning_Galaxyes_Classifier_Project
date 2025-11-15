@@ -1,0 +1,23 @@
+# --- Servidor y entorno ---
+Flask>=3.0
+gunicorn>=21.2.0
+python-dotenv>=1.0.0
+flask_cors
+
+# --- Machine Learning / Deep Learning ---
+tensorflow>=2.13.0
+scikit-learn>=1.2.0
+
+# --- Ciencia de datos ---
+numpy>=1.24.0
+pandas>=1.5.0
+
+# --- Visualización ---
+matplotlib>=3.6.0
+seaborn>=0.12.0
+
+# --- Imágenes ---
+Pillow>=10.0.0
+
+# --- Utilidades ---
+pathlib

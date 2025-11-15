@@ -1,0 +1,15 @@
+services:
+  backend:
+    build: .
+    container_name: flask_backend
+    ports:
+      - "5000:5000"
+    volumes:
+      - .:/app
+      - sqlite_data:/app/instance
+    env_file:
+      - .env
+    command: ["python", "run.py"]
+
+volumes:
+  sqlite_data:

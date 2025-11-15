@@ -1,4 +1,4 @@
-from flask import Flask,request , jsonify, send_from_directory
+from flask import Flask,request , jsonify, send_from_directory, url_for
 from flask_cors import CORS
 import os
 app = Flask(__name__)
@@ -29,7 +29,7 @@ def upload_file():
     # 4. Respuesta exitosa
     return jsonify({
         "filename": file.filename,
-        "features": ["feature1", "feature2", "feature3"]
+        "features": ["feature1", "feature2", "feature3","feature4", "feature5", "feature6","feature7", "feature8", "feature9"]
     }), 200
 
 @app.route("/articles")
@@ -42,8 +42,15 @@ def get_articles():
     return jsonify(articles)
 
 @app.route("/randomImage")
-def post_ramdom_image():
-    return send_from_directory("./","Messier_59.jpg")
+def random_image():
+    image_filename = "Messier_59.jpg"
+    hubble_sequence = ["Elliptical"]
+    image_url = url_for('static', filename=image_filename, _external=True)
+
+    return jsonify({
+        "url": image_url,
+        "hubblesequence": hubble_sequence
+    })
 
 if __name__ == "__main__":
     app.run(debug=True, port=5000)

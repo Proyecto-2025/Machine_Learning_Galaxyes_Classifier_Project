@@ -1,22 +1,25 @@
 from ..models.image_model import ImageModel
+from ..models.user_model import User
+from ..models.user_info_model import UserInfo
 from ..db import db
 from datetime import datetime
 from sqlalchemy import extract
-
+import json
 
 class DbService:
     
    @staticmethod
-   def save_prediction(filename: str, features: list[str]):
+   def save_prediction(filename: str, prediction: list[float], features: list[str], hubble_sequence: list[str] ):
        
        img = ImageModel(
            filename = filename,
-           creation_date = datetime.utcnow()
+           prediction = prediction,
+           features = features,
+           hubble_sequence = hubble_sequence,
+           creation_date = datetime.now()
        ) 
-       img.set_features(features)
        db.session.add(img)
        db.session.commit()
-       return img
    
    #For gaming purpose? 
    def search_image_by_id(self, image_id: int) -> ImageModel | None:
@@ -58,6 +61,22 @@ class DbService:
            query = query.filter(extract("day", ImageModel.creation_date) == day)   
        
        return query.all()
+   
+   def save_user_and_info(self, email: str, password_hash: str, username: str):
+       user = User(
+           email = email,
+           password_hash = password_hash
+        )
+       #Asociates info to the current user...
+       user.info = UserInfo(username = username)
+       #... so when you add user, you're also adding user_info with user id
+       db.session.add(user)
+       db.session.commit()
+       
+   def search_user_by_email(email: str):
+        existing_user = User.query.filter_by(email).first()
+        return existing_user
+       
    
    
    

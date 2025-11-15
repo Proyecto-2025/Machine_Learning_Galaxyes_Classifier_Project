@@ -1,4 +1,8 @@
 __pycache__
-Dockerfile
 Makefile
 dataset
+checkpoints
+model/Dockerfile
+
+.env
+*128px*

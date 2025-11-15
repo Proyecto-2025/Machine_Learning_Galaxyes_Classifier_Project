@@ -15,7 +15,7 @@ function Articles() {
     const [articles, setData] = useState([]);
 
     useEffect(() => {
-        fetch("http://127.0.0.1:5000/articles")
+        fetch("http://127.0.0.1:5000/api/v1/articles")
             .then(response => response.json())
             .then(data => {
                 setData(data);

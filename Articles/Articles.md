@@ -8,7 +8,7 @@
 # Possibles Articles
 - [x] Hubble Sequence
 - [x] Ellipticals Galaxies
-- [ ] Spiral Galaxies
+- [x] Spiral Galaxies
 - [ ] Lenticulars Galaxies
 - [ ] Barred Galaxies
 - [ ] galaxy Bulge

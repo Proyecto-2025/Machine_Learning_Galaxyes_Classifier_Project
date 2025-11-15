@@ -10,6 +10,8 @@ from sklearn.model_selection import train_test_split
 import seaborn as sns
 import random
 from epochCheckPoint import EpochCheckpoint
+import io
+import os
 
 # Rutas
 dataset_dir = Path("/home/david/Descargas/dataset/")
@@ -42,12 +44,13 @@ for i, (col, prob) in enumerate(mean_probs.head(10).items()):
 # Parámetros
 IMG_SIZE = 64
 BATCH_SIZE = 32
+CHANNEL_SIZE = 3
 NUM_CLASSES = len(prob_columns)
 
 # Función de preprocessing
 def preprocess_image_tf(filename, label):
     img = tf.io.read_file(filename)
-    img = tf.image.decode_jpeg(img, channels=3)
+    img = tf.image.decode_jpeg(img, channels=CHANNEL_SIZE)
     img = tf.image.resize(img, [IMG_SIZE, IMG_SIZE])
     img = tf.cast(img, tf.float32) / 255.0
     return img, label
@@ -82,7 +85,7 @@ val_ds = val_ds.batch(BATCH_SIZE).prefetch(tf.data.AUTOTUNE)
 
 # modelo CNN
 model = models.Sequential([
-    layers.Input(shape=(IMG_SIZE, IMG_SIZE, 3)),
+    layers.Input(shape=(IMG_SIZE, IMG_SIZE, CHANNEL_SIZE)),
 
     layers.Conv2D(32, (3, 3), activation='relu'),
     layers.MaxPooling2D((2, 2)),
@@ -95,10 +98,14 @@ model = models.Sequential([
     layers.Conv2D(128, (3, 3), activation='relu'),
     layers.MaxPooling2D((2, 2)),
 
+    layers.Dropout(0.25),
+
     layers.Flatten(),
 
     layers.Dense(512, activation='relu'),
+    layers.Dropout(0.50),
     layers.Dense(512, activation='relu'),
+    layers.Dropout(0.50),
     layers.Dense(NUM_CLASSES, activation='sigmoid')  # usamos sigmoid porque cada columna es una probabilidad
 ])
 
@@ -113,24 +120,48 @@ model.compile(optimizer='adam',
 model.summary()
 
 # -------------------------------
+# Save Resumen
+file_name = "64px_dropout_p4"
+save_dir = "./trained/summaries/"
+
+os.makedirs(save_dir, exist_ok=True)
+summary_path = os.path.join(save_dir,file_name+".txt")
+
+stream = io.StringIO()
+if (CHANNEL_SIZE == 3):
+    stream.write("Channel: RBG\n")
+if (CHANNEL_SIZE == 1):
+    stream.write("Channels: Gray Scale \n")
+
+model.summary(print_fn=lambda x: stream.write(x + '\n'))
+stream.write("\n=== Dropout Rates ===\n")
+for layer in model.layers:
+    if isinstance(layer, tf.keras.layers.Dropout):
+        stream.write(f"{layer.name}: rate = {layer.rate}\n")
+
+summary_text = stream.getvalue()
+
+with open(summary_path, "w") as f:
+    f.write(summary_text)
+
+print("✅ Model summary saved to " + file_name + ".txt")
+
+# -------------------------------
 # Entrenamiento
 
-checkpoint_cb = EpochCheckpoint(save_interval=50, file_name="name")
+checkpoint_cb = EpochCheckpoint(save_interval=15, file_name=file_name)
 
 history = model.fit(
     train_ds,
     validation_data=val_ds,
     batch_size=BATCH_SIZE,
-    epochs=20,
+    epochs=30,
     callbacks= [checkpoint_cb]
 )
-
-model.save("galaxy_model.h5")
 
 plt.plot(history.history['loss'], label='train_loss')
 plt.plot(history.history['val_loss'], label='val_loss')
 plt.legend()
-plt.savefig()
 plt.show()
 
 sample_idx = random.sample(range(len(X_val)), 5)

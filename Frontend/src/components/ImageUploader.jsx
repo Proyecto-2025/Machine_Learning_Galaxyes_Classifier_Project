@@ -24,7 +24,7 @@ export default function ImageUploader({onError,onSuccess}){
 
     try {
       setUploading(true);
-      const response = await fetch("http://127.0.0.1:5000/upload", {
+      const response = await fetch("http://127.0.0.1:5000/api/v1/classify", {
         method: "POST",
         body: formData,
       });
@@ -62,7 +62,7 @@ export default function ImageUploader({onError,onSuccess}){
 
       <button
         onClick={handleUpload}
-        className="uploader-btn"
+        id="uploader-btn"
         disabled={!image || uploading}
       >
         {uploading ? "Enviando..." : "Enviar al backend"}
