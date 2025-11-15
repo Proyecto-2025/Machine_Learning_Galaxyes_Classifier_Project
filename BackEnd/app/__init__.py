@@ -3,12 +3,14 @@ import os
 from flask import Flask
 from flask_cors import CORS
 from .db import db, migrate
+from dotenv import load_dotenv
 
 from .services.db_service import DbService
 from .services.file_storage_service import FileStorageService
 from .services.com_service import ComService
 
 def create_app(db_service = None, storage_service = None, com_service = None):
+    load_dotenv()
     
     instance_path = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "instance")
     os.makedirs(instance_path, exist_ok=True)
