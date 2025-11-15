@@ -5,12 +5,12 @@ import random
 from . import api_bp
 from ..db import db
 from ..models.image_model import ImageModel
-from .dependence import get_db_service
+from .dependence import get_db_service, get_storage_service
 
 @api_bp.route("/play", methods=["GET"])
 def play():
     try:
-        ids = [row[0] for row in db.session.query(ImageModel.id).all()]
+        ids = [row[0] for row in db.session.query(ImageModel.id).all()]  # add a for loop with owners?
         if not ids:
             return jsonify({"error": "No hay imágenes en la base de datos"}), 404
 
@@ -18,13 +18,16 @@ def play():
         random_id = random.choice(ids)
         
         db_service = get_db_service()
+        storage_service = get_storage_service()
 
         random_image = db_service.search_image_by_id(random_id)
         if not random_image:
             return jsonify({"error": f"Imagen id={random_id} no encontrada"}), 404
 
+        public_url = f"{storage_service.public_base_url}/{random_image.filename}"
+        
         return jsonify({
-            "filename": random_image.filename,
+            "filename": public_url,
             "features": random_image.features
         }), 200
 

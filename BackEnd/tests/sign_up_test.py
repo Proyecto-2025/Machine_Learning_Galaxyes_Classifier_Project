@@ -3,7 +3,7 @@ from unittest.mock import MagicMock
 def test_empty_signUp(client):
     print("Testing empty sign up on signup route...")
     
-    response = client.post("api/v1/signup", json = {})
+    response = client.post("/api/v1/signup", json = {})
     
     json_response = response.get_json()
     assert "Los campos usuario, email y password son obligatorios" in json_response.values()
@@ -12,7 +12,7 @@ def test_empty_signUp(client):
 def test_no_username(client):
     print("Testing no username sign up on signup route...")
     
-    response = client.post("api/v1/signup", json = {"email": "fake@mail.com", "password": "Password123"})
+    response = client.post("/api/v1/signup", json = {"email": "fake@mail.com", "password": "Password123"})
     
     json_response = response.get_json()
     assert "No se ha ingresado un nombre de usuario" in json_response.values()
@@ -21,7 +21,7 @@ def test_no_username(client):
 def test_no_password(client):
     print("Testing no password sign up on signup route...")
     
-    response = client.post("api/v1/signup", json = {"username": "name", "email": "fake@mail.com"})
+    response = client.post("/api/v1/signup", json = {"username": "name", "email": "fake@mail.com"})
     
     json_response = response.get_json()
     assert "No se ha ingresado una password" in json_response.values()
@@ -30,7 +30,7 @@ def test_no_password(client):
 def test_no_email(client):
     print("Testing no email sign up on signup route...")
     
-    response = client.post("api/v1/signup", json = {"username": "name", "password": "Password123"})
+    response = client.post("/api/v1/signup", json = {"username": "name", "password": "Password123"})
     
     json_response = response.get_json()
     assert "No se ha ingresado un email" in json_response.values()
@@ -39,7 +39,7 @@ def test_no_email(client):
 def test_weak_password(client):
     print("Testing weak password sign up on signup route...")
     
-    response = client.post("api/v1/signup", json = {"username": "name", "email": "fake@mail.com", "password": "password"})
+    response = client.post("/api/v1/signup", json = {"username": "name", "email": "fake@mail.com", "password": "password"})
     
     json_response = response.get_json()
     assert "La password debe tener al menos 8 caracteres, mayúscula, minúscula y número" in json_response.values()
