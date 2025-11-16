@@ -2,7 +2,7 @@
 from flask import jsonify, request
 from . import api_bp
 from ..services.validation_service import validate_image
-from .dependence import get_com_service, get_db_service, get_storage_service
+from ..dependence import get_com_service, get_db_service, get_storage_service
 import io
 
 @api_bp.route("/classify", methods=["POST"])

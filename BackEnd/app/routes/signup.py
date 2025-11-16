@@ -7,7 +7,7 @@ from ..services.password_service import PasswordService
 @api_bp.route("/signup", methods = ["POST"])
 
 def signup():
-    db_service = DbService
+    db_service = current_app.db_service
     #db_service = current_app.db_service
     data = request.get_json()
     

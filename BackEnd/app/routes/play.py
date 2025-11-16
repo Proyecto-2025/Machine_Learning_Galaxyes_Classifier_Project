@@ -5,7 +5,7 @@ import random
 from . import api_bp
 from ..db import db
 from ..models.image_model import ImageModel
-from .dependence import get_db_service, get_storage_service
+from ..dependence import get_db_service, get_storage_service
 
 @api_bp.route("/play", methods=["GET"])
 def play():
