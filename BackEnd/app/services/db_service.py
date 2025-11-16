@@ -62,23 +62,23 @@ class DbService:
        
        return query.all()
    
-   def save_user_and_info(self, email: str, password_hash: str, username: str):
-       user = User(
-           email = email,
-           password_hash = password_hash
-        )
-       #Asociates info to the current user...
-       user.info = UserInfo(username = username)
-       #... so when you add user, you're also adding user_info with user id
-       db.session.add(user)
-       db.session.commit()
-       
    def search_user_by_email(email: str):
-        existing_user = User.query.filter_by(email).first()
+        existing_user = User.query.filter_by(email=email).first()
         return existing_user
     
    def get_all_image_ids(self):
         return [row[0] for row in db.session.query(ImageModel.id).all()]
+   
+   def save_user_and_info(email, password_hash, username):
+    user = User(
+        email=email,
+        password_hash=password_hash
+    )
+    user.info = UserInfo(username=username)
+    db.session.add(user)
+    db.session.commit()
+
+    
        
    
    

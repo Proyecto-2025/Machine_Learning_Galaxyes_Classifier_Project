@@ -1,14 +1,22 @@
-import { useState } from "react";
+import { useState , useEffect } from "react";
 import "./style/SignIn.css"
+import { useNavigate } from "react-router-dom";
 export default function SignUp() {
   const [form, setForm] = useState({
-    nickname: "",
+    username: "",
+    email:"",
     password: "",
     confirmPass: "",
   });
-
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [successMsg, setSuccessMsg] = useState("");
+  const navigate = useNavigate();
+  // Si ya existe un token, no tiene sentido registrar
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (token) navigate("/");
+  }, [navigate]);
 
   function handleChange(e) {
     const { name, value } = e.target;
@@ -21,32 +29,45 @@ export default function SignUp() {
   async function handleSubmit(e) {
     e.preventDefault();
     setError("");
-
+    setSuccessMsg("");
+    setLoading(true);
     if (form.password !== form.confirmPass) {
       setError("Las contraseñas no coinciden");
+      setLoading(false);
       return;
     }
-
-    setLoading(true);
-
     try {
-      const res = await fetch("http://localhost:3000/api/register", {
+      const res = await fetch("http://127.0.0.1:5000/api/v1/signup", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          nickname: form.nickname,
-          password: form.password,
-        }),
+        username: form.username,
+        email: form.email,
+        password: form.password
+      })
       });
 
       if (!res.ok) {
-        const data = await res.json();
-        throw new Error(data.message || "Error al registrarse");
+        let msg = "Error al registrar";
+        try {
+          const info = await res.json();
+          if (info.error) msg = info.error;
+          if(info.message) msg = info.message;
+          console.log("Backend error:", info);
+
+        } catch {}
+        throw new Error(msg);
       }
 
       const data = await res.json();
-      console.log("Registro OK:", data);
-      alert("Cuenta creada con éxito!");
+
+      // El backend puede devolver success, user o mensaje
+      setSuccessMsg("Usuario registrado correctamente. Ahora inicia sesión.");
+      console.log(successMsg);
+      setForm({ username: "",email:"", password: "",confirmPass:"", });
+
+      // Esperar 1 segundo y llevar a SignIn
+      setTimeout(() => navigate("/signin"), 1000);
 
     } catch (err) {
       setError(err.message);
@@ -63,13 +84,20 @@ export default function SignUp() {
 
         <input
           type="text"
-          name="nickname"
-          placeholder="Nickname"
-          value={form.nickname}
+          name="username"
+          placeholder="username"
+          value={form.username}
           onChange={handleChange}
           required
         />
-
+        <input
+          type="text"
+          name="email"
+          placeholder="email"
+          value={form.email}
+          onChange={handleChange}
+          required>
+        </input>
         <input
           type="password"
           name="password"

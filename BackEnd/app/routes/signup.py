@@ -1,13 +1,14 @@
 from flask import jsonify, request, current_app
 from . import api_bp
+from ..services.db_service import DbService
 from ..services.password_service import PasswordService
 
 
 @api_bp.route("/signup", methods = ["POST"])
 
 def signup():
-    
-    db_service = current_app.db_service
+    db_service = DbService
+    #db_service = current_app.db_service
     data = request.get_json()
     
     if not data:
@@ -23,13 +24,14 @@ def signup():
         return jsonify({"error": "La password debe tener al menos 8 caracteres, mayúscula, minúscula y número"}), 400
     
     existing_user = db_service.search_user_by_email(data["email"])
+
     if existing_user:
         return jsonify({"error": "Ya existe una cuenta asociada a ese email"}), 400
     
     email = data["email"]
     password_hash = PasswordService.hash_password(data["password"])
     username = data["username"]
-    db_service.save_user(email, password_hash, username)
+    db_service.save_user_and_info(email, password_hash, username)
     return jsonify({"success": "La cuenta ha sido creada con exito"}), 201
     
     

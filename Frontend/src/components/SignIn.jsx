@@ -1,16 +1,23 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import "./style/SignIn.css";
 export default function SignIn() {
   const [form, setForm] = useState({
-    nickname: "",
-    password: "",
+    username: "",
+    email:"",
+    password: ""
   });
-
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const navigate = useNavigate(); //Para redirigir al SignUp
 
-  const navigate = useNavigate(); // 👈 Para redirigir
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      // opcional: podrías validar/decodificar el token aquí
+      navigate("/"); // o la ruta que quieras proteger
+    }
+  }, [navigate]);
 
   function handleChange(e) {
     const { name, value } = e.target;
@@ -26,27 +33,50 @@ export default function SignIn() {
     setError("");
 
     try {
-      const res = await fetch("http://localhost:3000/api/signin", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(form),
-      });
+        const res = await fetch("http://127.0.0.1:5000/api/v1/login", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(form), // form = { nickname, password }
+        });
 
-      if (!res.ok) {
+        // Si el backend devuelve 4xx/5xx, intentamos leer el mensaje
+        if (!res.ok) {
+            // si el backend envía JSON con message, lo mostramos
+            let errMsg = "Error en el login";
+            try {
+            const errData = await res.json();
+            if (errData && errData.message) errMsg = errData.message;
+            } catch (jsonErr) {
+            // no es JSON -> dejamos errMsg por defecto
+            }
+            throw new Error(errMsg);
+        }
+
+        // respuesta OK: esperamos JSON con token
         const data = await res.json();
-        throw new Error(data.message || "Error al iniciar sesión");
-      }
 
-      const data = await res.json();
-      console.log("Login OK:", data);
+        if (!data || !data.token) {
+            throw new Error("Respuesta inválida del servidor (no hay token).");
+        }
 
-      // redirigir al home (puede ser otra ruta)
-      navigate("/");
+        // Guardar token (localStorage para una app simple)
+        localStorage.setItem("token", data.token);
+
+        // Opcional: guardar datos del usuario si vienen en la respuesta
+        if(data.user){
+            localStorage.setItem("user", JSON.stringify(data.user));
+        }
+
+        // Redirigir a la página principal (o dashboard)
+        navigate("/");
 
     } catch (err) {
-      setError(err.message);
+        console.error("Login error:", err);
+        setError(err.message || "Error al iniciar sesión");
     } finally {
-      setLoading(false);
+        setLoading(false);
     }
   }
 
@@ -59,13 +89,20 @@ export default function SignIn() {
         
         <input
           type="text"
-          name="nickname"
-          placeholder="Nickname"
-          value={form.nickname}
+          name="username"
+          placeholder="username"
+          value={form.username}
           onChange={handleChange}
           required
         />
-
+        <input
+          type="text"
+          name="email"
+          placeholder="email"
+          value={form.email}
+          onChange={handleChange}
+          required
+        />
         <input
           type="password"
           name="password"

@@ -1,13 +1,16 @@
-
+import inspect
 import os
+
+
 from flask import Flask
 from flask_cors import CORS
 from .db import db, migrate
 from dotenv import load_dotenv
-
 from .services.db_service import DbService
 from .services.file_storage_service import FileStorageService
 from .services.com_service import ComService
+print(">>> DbService REAL FILE:", inspect.getfile(DbService))
+print(">>> save_user_and_info SIGNATURE:", inspect.signature(DbService.save_user_and_info))
 
 def create_app(db_service = None, storage_service = None, com_service = None):
     load_dotenv()
@@ -23,7 +26,7 @@ def create_app(db_service = None, storage_service = None, com_service = None):
     app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
 
-    CORS(app)  
+    CORS(app, resources={r"/api/*": {"origins": "*"}})
 
     # Init DB
     db.init_app(app)
