@@ -7,7 +7,7 @@ import Learn from './Learn.jsx'
 import Play from './Play.jsx'
 import SignIn from "./SignIn.jsx";
 import SignUp from "./SignUp.jsx";
-
+import Footer from "./Footer.jsx"
 export default function AppRoutes() {
     return (
         <>
@@ -23,6 +23,8 @@ export default function AppRoutes() {
                     <Route path="/signup" element={<SignUp />} />
                 </Routes>
             </div>
+            <Footer/>
+
         </>
     );
 }

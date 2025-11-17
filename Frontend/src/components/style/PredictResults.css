@@ -1,16 +1,15 @@
 .results {
-  margin-top: 10vh;
-
-  padding: 1.5rem;
-  padding-top: 25vh;
+  position: fixed;
+  top: -5vh;        /* altura del header real */
+  bottom: 20vh;     /* altura del footer real */
+  left: 15vw;
   width: 70vw;
-
+  padding: 7rem 2rem 30vh 2rem; /* <-- padding bottom SÍ funciona ahora */
+  width: 70vw;
+  height: 80vh;
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
-
-  min-height: 80vh;
-  max-height: 100vh;
   overflow-y: scroll;
   overflow-x: hidden;
   scroll-behavior:smooth ;
@@ -108,7 +107,7 @@
 
 }
 
-.results-btn {
+.results-btn  {
   position: relative;
   background: linear-gradient(135deg, #05085c, #4361ee, #ab7435);
   color: #fff;

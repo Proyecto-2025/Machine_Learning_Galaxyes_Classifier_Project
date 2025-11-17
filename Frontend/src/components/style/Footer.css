@@ -1,0 +1,35 @@
+.footer {
+    width: 100%;
+    padding: 15px 0;
+    background: rgba(0, 0, 0, 0.18);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    margin-top: 40px; /* separarlo del contenido si hace falta */
+}
+
+.footer-content {
+    width: 90%;
+    max-width: 1200px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    font-size: 0.9rem;
+}
+
+.footer-links a {
+    margin-left: 20px;
+    text-decoration: none;
+    color: #d0e9ff;
+    transition: 0.25s;
+}
+
+.footer-links a:hover {
+    color: white;
+    text-shadow: 0 0 10px rgba(150, 200, 255, 0.5);
+}
