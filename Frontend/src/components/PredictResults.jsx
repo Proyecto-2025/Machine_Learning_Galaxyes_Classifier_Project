@@ -50,7 +50,7 @@ export default function PredictResults({onBack}) {
       </div>
       <div id="botonsContainer">
 
-        <button className="results-btn" id onClick={handleBack}>
+        <button  id="share-another-btn" onClick={handleBack}>
           Upload another Image
         </button>
         

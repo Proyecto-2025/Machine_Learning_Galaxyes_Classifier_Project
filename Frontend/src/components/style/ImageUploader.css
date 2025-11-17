@@ -48,8 +48,8 @@
 }
 
 #uploader-btn {
+  color: aliceblue;
   position: relative;
-  color: #fff;
   border: none;
   padding: 0.8rem 2rem;
   font-size: 1.1rem;
@@ -57,33 +57,38 @@
   border-radius: 12px;
   cursor: pointer;
   transition: all 0.3s ease;
-  box-shadow: 0 0 15px rgba(76, 201, 240, 0.3);
-  overflow: hidden;
-}
-#uploader-btn {
-  transform: translateY(-2px) scale(1.03);
-  box-shadow: 0 0 25px rgba(76, 201, 240, 0.6);
-  background: linear-gradient(20deg, #040237ec,#48179c, #0f6cb8, #07c293);
-}
+  box-shadow: 0 0 25px rgba(70, 109, 122, 0.6);
 
+  overflow: hidden; /* Need to hidde overflow effect*/
+  transform: translateY(-2px) scale(1.03);
+  background: rgba(194, 190, 190, 0.058);
+  backdrop-filter: blur(5px);
+}
+#uploader-btn:hover{
+  box-shadow: 0 0 10px rgba(76, 201, 240, 0.6);
+  backdrop-filter: blur(0px);
+}
 /* efecto de “destello” animado */
 #uploader-btn::before {
   content: "";
   position: absolute;
   top: 0;
-  left: -75%;
+  left: -75%;/*arranca en hidden en la izquierda*/
   width: 50%;
   height: 100%;
+  box-shadow: 0 0 25px rgba(76, 201, 240, 0.6);
+
   background: linear-gradient(
     120deg,
     transparent,
     rgba(255, 255, 255, 0.5),
     transparent
   );
+
   transform: skewX(-25deg);
   transition: left 0.7s ease;
 }
 
 #uploader-btn:hover::before {
-  left: 125%;
+  left: 125%; /*vuelve*/
 }

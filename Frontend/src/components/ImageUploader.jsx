@@ -65,7 +65,7 @@ export default function ImageUploader({onError,onSuccess}){
         id="uploader-btn"
         disabled={!image || uploading}
       >
-        {uploading ? "Enviando..." : "Enviar al backend"}
+        {uploading ? "Sharing..." : "Send for analysis"}
       </button>
     </div>
   );
