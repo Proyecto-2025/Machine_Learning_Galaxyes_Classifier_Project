@@ -1,14 +1,29 @@
 .results {
+  margin-top: 15vh;
   padding: 1.5rem;
   width: 70vw;
-  min-height: fit-content;
-  height: 40vh;
-  color:white;
+
+  /* Esto crea un contenedor vertical */
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+
+  /* Para que el fondo cubra todo */
+  min-height: 60vh;
+  max-height: 80vh;
+
+  /* Scroll interno si el contenido crece */
+  overflow-y: auto;
+  overflow-x: hidden;
+  scroll-behavior: smooth;
+
+  color: white;
   background: #181313ce;
   border-radius: 10px;
   box-shadow: 0px 2px 6px rgba(0,0,0,0.15);
   text-align: center;
 }
+
 .headers{
   display: flex;
   width: inherit;
@@ -21,7 +36,21 @@
   grid-template-rows: 1fr 1fr;
   border-top: 2px solid white;
 }
-
+#predict-values{
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: 12px;
+  padding: 10px;
+}
+.prediction-item{
+  background-color: #1e1e2f;     /* color oscuro elegante */
+  padding: 8px 12px;
+  border-radius: 8px;
+  text-align: center;
+  font-size: 0.95rem;
+  color: #e0e0e0;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+}
 
 #features{
   display: flex;
@@ -56,7 +85,7 @@
 .results-btn {
   transform: translateY(-2px) scale(1.03);
   box-shadow: 0 0 25px rgba(76, 201, 240, 0.6);
-  background: linear-gradient(135deg, #efe80bec,#0fe34b7d, #0f6cb8, #260977);
+  background: linear-gradient(135deg, #0fe34b7d,#0f6cb8, #260977, #000000);
 }
 
 /* efecto de “destello” animado */

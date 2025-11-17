@@ -13,32 +13,35 @@ export default function PredictResults({onBack}) {
   }
   return (
     <div className="results">
-      <h2 className="headers">Resultados de Predicción</h2>
+      <h1 className="headers" id="header1">Image analysis completed... </h1>
       <div className="section">
         
-        <h2 className="headers">Archivo recidido</h2>
-        <p>{data.filename}</p>
-
-      </div>
-      <div className="section">
-      
-          <h2 className="headers">Features</h2>
+        <h2 className="headers">Features</h2>
          
           <div id="features">
             {data.features.map((feature,index)=>(
               <p key={index}>{feature}</p>
             ))}
           </div>
-       
+
       </div>
       <div className="section">
-        
-          <h2 className="headers">Tipo de Galaxia Estimado</h2>
+        <h2 className="headers">Hubble Secuense</h2>
           
-          <p>HardCoded Result, TODO Implement Backend Clasification prediction</p>
-        
+        <div id="hubble">
+          {data.hubblesequence?.map((h, index) => (
+            <p key={index}>{h}</p>
+          ))}
+        </div>
       </div>
-      {/*<p><strong>Mensaje:</strong> {data.message}</p> */}
+      <div id="values-section">
+        <h2 className="headers">Prediction Values</h2>
+          <div id="predict-values">
+            {data.prediction?.map((item, index) => (
+              <p key={index} className="prediction-item">{item}</p>
+            ))}
+          </div>
+      </div>
       <div id="botonsContainer">
 
         <button className="results-btn" onClick={handleBack}>
