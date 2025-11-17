@@ -118,7 +118,7 @@ export default function SignUp() {
 
         {error && <p style={{ color: "red" }}>{error}</p>}
 
-        <button type="submit" disabled={loading} id="register-btn">
+        <button type="submit" disabled={loading} className="register-btn">
           {loading ? "Registrando..." : "Sign Up"}
         </button>
 

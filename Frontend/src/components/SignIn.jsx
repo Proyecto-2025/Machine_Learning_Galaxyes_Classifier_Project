@@ -83,9 +83,9 @@ export default function SignIn() {
   return (
     <div className="signin-container">
       
-      <h3>Sign In</h3>
+      <h3>Sign In as user</h3>
 
-      <form onSubmit={handleSubmit} >
+      <form onSubmit={handleSubmit} className="form">
         
         <input
           type="text"
@@ -114,7 +114,7 @@ export default function SignIn() {
 
         {error && <p style={{ color:"red" }}>{error}</p>}
 
-        <button type="submit" disabled={loading}>
+        <button type="submit" disabled={loading}  className="register-btn">
           {loading ? "Ingresando..." : "Sign In"}
         </button>
       </form>
@@ -122,9 +122,9 @@ export default function SignIn() {
       {/* Botón SignUp */}
       <button
         onClick={() => navigate("/signup")}
-        className="singup-btn"
+        className="register-btn" id="signup-btn"
       >
-        ¿No tenés cuenta? Sign Up
+        No Account? Sign Up
       </button>
 
     </div>

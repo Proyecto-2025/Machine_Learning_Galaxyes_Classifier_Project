@@ -9,9 +9,11 @@
   padding-bottom: 1em;
   display: flex;
   flex-direction: column;
+  justify-content: center;
+  align-items: center;
   border-radius: 10%;
   box-shadow: 0 0 10px rgba(120, 150, 255, 0.6);
-
+  gap: 2em;
 }
 
 .signin-container h3 {
@@ -25,11 +27,11 @@
   justify-content: center;
   align-items: center;
   flex-direction: column;
-
+  width: 95%;
   gap: 3vh;
 }
 .signin-container input {
-  width: 75%;
+  width: 80%;
   height: 2.2em;
   border-radius: 1vh;
   border: 1px solid rgba(150, 170, 255, 0.4);
@@ -47,44 +49,6 @@
   box-shadow: 0 0 10px rgba(120, 150, 255, 0.6);
 }
 
-/* ========= MAIN BUTTON ========= */
-.signin-container button[type="submit"] {
-  padding: 10px;
-  background: linear-gradient(45deg, #4c6fff, #7b5bff);
-  border: none;
-  border-radius: 8px;
-
-  color: white;
-  font-size: 16px;
-  font-weight: 600;
-  cursor: pointer;
-
-  transition: 0.25s;
-}
-
-.signin-container button[type="submit"]:hover {
-  transform: scale(1.05);
-  box-shadow: 0 0 15px rgba(120, 150, 255, 0.9);
-}
-
-/* ========= SIGN UP BUTTON ========= */
-.signup-btn {
-  padding: 8px;
-  border-radius: 8px;
-
-  background: transparent;
-  color: #9ab6ff;
-
-  border: 1px solid rgba(120, 150, 255, 0.4);
-  cursor: pointer;
-
-  transition: 0.25s;
-}
-
-.signup-btn:hover {
-  background: rgba(120, 150, 255, 0.15);
-  box-shadow: 0 0 10px rgba(120, 150, 255, 0.6);
-}
 
 .error-msg {
   color: #ff8c8c;
@@ -93,7 +57,7 @@
 }
 
 
-#register-btn {
+.register-btn {
   position: relative;
   color: #fff;
   border: none;
@@ -106,14 +70,14 @@
   box-shadow: 0 0 15px rgba(76, 201, 240, 0.3);
   overflow: hidden;
 }
-#register-btn {
+.register-btn {
   transform: translateY(-2px) scale(1.03);
   box-shadow: 0 0 25px rgba(76, 201, 240, 0.6);
-  background: linear-gradient(20deg, #040237ec,#48179c, #0f6cb8, #07c293);
+  background: linear-gradient(20deg, #040237ec,#150742, #0f6cb8, #07c293);
 }
 
 /* efecto de “destello” animado */
-#register-btn::before {
+.register-btn::before {
   content: "";
   position: absolute;
   top: 0;
@@ -130,6 +94,9 @@
   transition: left 0.7s ease;
 }
 
-#register-btn:hover::before {
+.register-btn:hover::before {
   left: 125%;
+}
+#signup-btn{
+  width: 75%;
 }
