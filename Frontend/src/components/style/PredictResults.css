@@ -1,21 +1,19 @@
 .results {
-  margin-top: 15vh;
+  margin-top: 10vh;
+
   padding: 1.5rem;
+  padding-top: 25vh;
   width: 70vw;
 
-  /* Esto crea un contenedor vertical */
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
 
-  /* Para que el fondo cubra todo */
-  min-height: 60vh;
-  max-height: 80vh;
-
-  /* Scroll interno si el contenido crece */
-  overflow-y: auto;
+  min-height: 80vh;
+  max-height: 100vh;
+  overflow-y: scroll;
   overflow-x: hidden;
-  scroll-behavior: smooth;
+  scroll-behavior:smooth ;
 
   color: white;
   background: #181313ce;
@@ -34,6 +32,48 @@
 .section {
   display: grid;
   grid-template-rows: 1fr 1fr;
+  border-top: 2px solid white;
+}
+#hubble-div{
+  display: grid;
+  grid-template-rows: auto auto; /* Dos filas */
+  gap: 10px;
+}
+#hubble-data{
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  
+}
+#hubble-value{
+  width: 15vh;
+  height: 15vh;
+  font-size: 3em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: groove 3px whitesmoke;
+  box-shadow: 0 0 25px rgba(82, 135, 155, 0.6);
+}
+#hubble-img-container , #hubble-data-container{
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+
+}
+#img-hubble{
+  height: 30vh;
+  min-width:35vw;
+  margin-right: 3em;
+  border: groove 3px whitesmoke;
+  box-shadow: 0 0 25px rgba(82, 135, 155, 0.6);
+  background-image: url('../../assets/The-Hubble-Sequence.png');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+
+}
+#values-section{
   border-top: 2px solid white;
 }
 #predict-values{

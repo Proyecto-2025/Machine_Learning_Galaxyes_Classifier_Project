@@ -25,14 +25,20 @@ export default function PredictResults({onBack}) {
           </div>
 
       </div>
-      <div className="section">
-        <h2 className="headers">Hubble Secuense</h2>
+      <div className="section" id="hubble-div">
+        <h2 className="headers">Hubble Sequense</h2>
           
-        <div id="hubble">
-          {data.hubblesequence?.map((h, index) => (
-            <p key={index}>{h}</p>
-          ))}
+        <div id="hubble-data">
+          <div id="hubble-data-container">
+            {data.hubblesequence?.map((h, index) => (
+            <p key={index} id="hubble-value">{h}</p>
+            ))} 
+          </div>
+          <div id="hubble-img-container">
+            <div id="img-hubble"></div> 
+          </div>
         </div>
+
       </div>
       <div id="values-section">
         <h2 className="headers">Prediction Values</h2>
