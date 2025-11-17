@@ -4,6 +4,7 @@ from ..dependence import get_db_service
 from ..services.password_service import PasswordService
 import jwt
 from datetime import datetime, timedelta
+import os
 
 
 @api_bp.route("/login", methods=["POST"])
@@ -40,9 +41,10 @@ def login():
         "exp": expiracion
     }
 
+    secret_key = os.environ.get("SECRET_KEY")
     token = jwt.encode(
         payload,
-        current_app.config["SECRET_KEY"],
+        secret_key,
         algorithm="HS256"
     )
 
@@ -52,6 +54,5 @@ def login():
         "user": {
             "id": user.id,
             "email": user.email,
-            "username": user.username
         }
     }), 200

@@ -62,14 +62,14 @@ class DbService:
        
        return query.all()
    
-   def search_user_by_email(email: str):
+   def search_user_by_email(self, email: str):
         existing_user = User.query.filter_by(email=email).first()
         return existing_user
     
    def get_all_image_ids(self):
         return [row[0] for row in db.session.query(ImageModel.id).all()]
    
-   def save_user_and_info(email, password_hash, username):
+   def save_user_and_info(self, email, password_hash, username):
     user = User(
         email=email,
         password_hash=password_hash

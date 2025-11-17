@@ -7,3 +7,4 @@ alembic ==1.16.5
 pillow ==11.3.0
 boto3>=1.26
 dotenv>=0.9.9
+PyJWT == 2.8.0
