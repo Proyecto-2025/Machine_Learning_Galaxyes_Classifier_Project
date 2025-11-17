@@ -78,9 +78,9 @@ export default function SignUp() {
 
   return (
     <div className="signin-container" >
-      <form onSubmit={handleSubmit} >
+      <form onSubmit={handleSubmit} className="form">
 
-        <h3>Registro</h3>
+        <h3>Welcome to Galaxy Zoo!</h3>
 
         <input
           type="text"
@@ -110,7 +110,7 @@ export default function SignUp() {
         <input
           type="password"
           name="confirmPass"
-          placeholder="Confirmar Password"
+          placeholder="Check Password"
           value={form.confirmPass}
           onChange={handleChange}
           required
@@ -118,8 +118,8 @@ export default function SignUp() {
 
         {error && <p style={{ color: "red" }}>{error}</p>}
 
-        <button type="submit" disabled={loading}>
-          {loading ? "Registrando..." : "Crear Cuenta"}
+        <button type="submit" disabled={loading} id="register-btn">
+          {loading ? "Registrando..." : "Sign Up"}
         </button>
 
       </form>

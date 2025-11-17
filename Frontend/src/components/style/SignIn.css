@@ -1,41 +1,41 @@
 /* ========= FORM CONTAINER ========= */
-.signin-container, .signup-container {
-  width: 300px;
-  margin: 50px auto;
-  padding: 25px;
-
-  background: rgba(10, 10, 30, 0.85);
+.signin-container {
+  
+  background: rgba(10, 10, 30, 0.1);
   backdrop-filter: blur(6px);
-
-  border: 1px solid rgba(120, 150, 255, 0.4);
-  border-radius: 14px;
-  box-shadow: 0 0 20px rgba(80, 120, 255, 0.3);
-
-  color: #dce2ff;
-  font-family: 'Segoe UI', sans-serif;
-
+  width: 40vw;
+  height: 40vh;
+  min-height: fit-content;
+  padding-bottom: 1em;
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  border-radius: 10%;
+  box-shadow: 0 0 10px rgba(120, 150, 255, 0.6);
+
 }
 
-/* ========= TITLE ========= */
 .signin-container h3 {
   text-align: center;
   color: #9ab6ff;
   text-shadow: 0 0 8px rgba(120, 150, 255, 0.7);
   letter-spacing: 2px;
 }
+.form{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
 
-/* ========= INPUTS ========= */
+  gap: 3vh;
+}
 .signin-container input {
-  width: 100%;
-  padding: 10px 12px;
-
-  border-radius: 8px;
+  width: 75%;
+  height: 2.2em;
+  border-radius: 1vh;
   border: 1px solid rgba(150, 170, 255, 0.4);
-  background: rgba(20, 20, 50, 0.7);
+  background: rgba(95, 95, 95, 0.7);
   color: #e0e6ff;
+  box-shadow: 0 0 10px rgba(120, 150, 255, 0.6);
 
   font-size: 15px;
   outline: none;
@@ -86,9 +86,50 @@
   box-shadow: 0 0 10px rgba(120, 150, 255, 0.6);
 }
 
-/* ========= ERROR TEXT ========= */
 .error-msg {
   color: #ff8c8c;
   font-size: 14px;
   text-align: center;
+}
+
+
+#register-btn {
+  position: relative;
+  color: #fff;
+  border: none;
+  padding: 0.8rem 2rem;
+  font-size: 1.1rem;
+  font-weight: 600;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 0 15px rgba(76, 201, 240, 0.3);
+  overflow: hidden;
+}
+#register-btn {
+  transform: translateY(-2px) scale(1.03);
+  box-shadow: 0 0 25px rgba(76, 201, 240, 0.6);
+  background: linear-gradient(20deg, #040237ec,#48179c, #0f6cb8, #07c293);
+}
+
+/* efecto de “destello” animado */
+#register-btn::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -75%;
+  width: 50%;
+  height: 100%;
+  background: linear-gradient(
+    120deg,
+    transparent,
+    rgba(255, 255, 255, 0.5),
+    transparent
+  );
+  transform: skewX(-25deg);
+  transition: left 0.7s ease;
+}
+
+#register-btn:hover::before {
+  left: 125%;
 }
