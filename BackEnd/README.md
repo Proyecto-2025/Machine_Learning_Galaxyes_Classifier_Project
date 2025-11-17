@@ -90,3 +90,94 @@ curl -X POST http://localhost:5000/api/v1/play \
 La semilla usada para generar el número aleatorio se basa en la hora actual(UTC timestamp).
 La elección de la imagen es uniforme entre todas las que están registradas en la base de datos.
 No se requiere enviar información adicional en el request, el backend se encarga de todo el proceso.
+
+# API Endpoint: /api/v1/articles (Create)
+# Descripción
+   Esta ruta permite crear un nuevo artículo en la base de datos. El backend valida los campos recibidos, crea el registro y devuelve el artículo creado.
+# Método
+POST
+# URL
+/api/v1/articles
+# Parámetros
+title
+Tipo: string
+Requerido: sí
+Descripción: título del artículo
+
+# Validaciones
+title no puede ser vacío
+resumen no puede ser vacío
+Cuerpo del articulo no puede ser vacío
+
+# API Endpoint: /api/v1/articles (List)
+# Descripción
+Devuelve la lista completa de artículos almacenados en la base de datos.
+# Método
+GET
+# URL
+/api/v1/articles
+# Parámetros
+No recibe parámetros.
+# Validaciones
+Debe poder ejecutar correctamente la consulta en la base de datos
+
+# API Endpoint: /api/v1/articles/<id> 
+# Descripción
+Devuelve un único artículo según su ID.
+# Método
+GET
+# URL
+/api/v1/articles/<id>
+# Parámetros
+id
+Tipo: integer
+Requerido: sí
+Descripción: ID del artículo a consultar
+# Validaciones
+El ID debe ser un entero válido
+El artículo debe existir
+
+# API Endpoint: /api/v1/login
+# Descripción
+Permite iniciar sesión verificando email y contraseña. Si las credenciales son válidas, genera un token JWT y devuelve los datos del usuario.
+# Método
+POST
+# URL
+/api/v1/login
+# Parámetros
+email
+Tipo: string
+Requerido: sí
+password
+Tipo: string
+Requerido: sí
+# Validaciones
+El email debe existir
+La contraseña debe coincidir con el hash guardado
+Ambos campos deben enviarse
+
+# Servicio: Image Validation
+# Descripción
+Este servicio se encarga de validar archivos de imagen enviados al backend. Realiza múltiples verificaciones: extensión permitida, MIME type correcto, tamaño máximo y que el archivo sea efectivamente una imagen válida. Devuelve un resultado booleano junto a un mensaje explicando la validación.
+
+# Archivo
+app/services/validation_service.py
+
+# Parámetros:
+filename
+Tipo: string
+Descripción: nombre del archivo recibido
+
+# Retorno:
+True si la extensión es válida, False en caso contrario.
+
+# Parámetros:
+file
+Tipo: FileStorage (archivo subido)
+Descripción: archivo a validar
+
+# Validaciones realizadas
+La extensión debe ser png, jpg o jpeg
+El MIME type debe ser image/jpeg o image/png
+El tamaño del archivo no puede superar 5 MB
+El archivo debe ser una imagen válida y decodificable por PIL
