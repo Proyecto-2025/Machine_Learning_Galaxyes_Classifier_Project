@@ -1,3 +1,15 @@
+# Variables de entorno
+Descargar el archivo .env del siguiente enlace:  https://drive.google.com/file/d/115NhcbUnr8MpyW9Dh-1L3-n_5MKuyK9J/view?usp=drive_link y colocarlo en la carpeta BackEnd/.
+
+
+# Build de imagen
+
+Desde BackEnd/ ejecutar docker compose up --build
+
+# Set de imagenes
+
+Para cargar un set de imagenes, ejecutar el archivo load_images.py
+
 # API Endpoint: /api/v1/classify
 
 ## Descripción
