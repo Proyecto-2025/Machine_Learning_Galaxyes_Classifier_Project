@@ -15,7 +15,7 @@ export default function Play(){
     useEffect(() => {
         async function fetchImageData() {
             try {
-                const res = await fetch("https://galaxies-backend.onrender.com/api/v1/play");
+                const res = await fetch("https://galaxybackend-pwdu.onrender.com/api/v1/play");
                 const json = await res.json();
                 setImage(json.url);
                 setCaracteristics(json.hubblesequence);

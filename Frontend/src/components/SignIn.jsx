@@ -33,7 +33,7 @@ export default function SignIn() {
     setError("");
 
     try {
-        const res = await fetch("https://galaxies-backend.onrender.com/api/v1/login", {
+        const res = await fetch("https://galaxybackend-pwdu.onrender.com/api/v1/login", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",

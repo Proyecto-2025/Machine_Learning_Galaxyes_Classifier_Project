@@ -15,7 +15,7 @@ function Articles() {
     const [articles, setData] = useState([]);
 
     useEffect(() => {
-        fetch("https://galaxies-backend.onrender.com/api/v1/articles")
+        fetch("https://galaxybackend-pwdu.onrender.com/api/v1/articles")
             .then(response => response.json())
             .then(data => {
                 setData(data);

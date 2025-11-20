@@ -24,7 +24,7 @@ export default function ImageUploader({onError,onSuccess}){
 
     try {
       setUploading(true);
-      const response = await fetch("https://galaxies-backend.onrender.com/api/v1/classify", {
+      const response = await fetch("https://galaxybackend-pwdu.onrender.com/api/v1/classify", {
         method: "POST",
         body: formData,
       });
