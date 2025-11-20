@@ -43,7 +43,7 @@ export default function Play(){
             return
         }
 
-        if (selected == caracteris) {
+        if (selected[0] == caracteris[0]) {
             setGuess(true);
         } else {
             setGuess(false);
