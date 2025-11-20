@@ -1,6 +1,7 @@
 # Variables de entorno
 Descargar el archivo .env del siguiente enlace:  https://drive.google.com/file/d/115NhcbUnr8MpyW9Dh-1L3-n_5MKuyK9J/view?usp=drive_link y colocarlo en la carpeta BackEnd/.
 
+# El servicio esta desplegado en la nube : https://galaxies-backend.onrender.com
 
 # Build de imagen
 
@@ -37,7 +38,7 @@ Descripción: archivo de imagen a procesar. Debe ser JPG o PNG y máximo 5 MB
 - Debe ser una imagen valida (no corrupto)
 
 ## Ejemplo de request
-curl -X POST http://localhost:5000/api/v1/classify \
+curl -X POST https://galaxies-backend.onrender.com/api/v1/classify 
    -F "image=@/ruta/a/mi/imagen.jpg"
 
 ## Respuesta exitosa (200 OK)
@@ -83,7 +84,7 @@ La selección es totalmente interna, el backend genera una semilla aleatoria bas
 - El ID aleatorio debe corresponder a un registro valido.
 
 ## Ejemplo de request
-curl -X POST http://localhost:5000/api/v1/play \
+curl -X POST https://galaxies-backend.onrender.com/api/v1/play \
    -H "Content-Type: application/json"
 
 ## Respuesta exitosa (200 OK)
