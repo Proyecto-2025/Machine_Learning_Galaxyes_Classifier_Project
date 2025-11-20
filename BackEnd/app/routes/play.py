@@ -28,8 +28,8 @@ def play():
         public_url = f"{storage_service.public_base_url}/{random_image.filename}"
         
         return jsonify({
-            "filename": public_url,
-            "features": random_image.features
+            "url": public_url,
+            "hubblesequence": random_image.hubble_sequence
         }), 200
 
     except Exception as e:
