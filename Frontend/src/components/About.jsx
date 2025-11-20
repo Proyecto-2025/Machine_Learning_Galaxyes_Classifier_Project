@@ -122,9 +122,6 @@ export default function About() {
                                 </tbody>
                             </table> 
                         </div>
-                        <div className="description2">
-                                <p>Continuacion de descripcion</p>
-                        </div>
                     </div>
                 </div>
             
